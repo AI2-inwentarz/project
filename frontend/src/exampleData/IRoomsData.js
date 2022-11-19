@@ -19,7 +19,7 @@ export const IRoomsData = {
     },
     2:{
         NUMBER: '398',
-        TYPE: "laboratoryjnaa",
+        TYPE: "wykładowa",
         MAX_PERSON: '15',
         WIDTH: '10',
         LENGTH: '15',
