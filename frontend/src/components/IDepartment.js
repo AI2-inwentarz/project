@@ -15,8 +15,8 @@ export default function IDepartment() {
             },
         }}>
           {Object.values(IDepartmentData).map(item =>(
-            <Accordion.Item value={item.SHORT_NAME}>
-              <Accordion.Control w>{item.NAME}</Accordion.Control>
+            <Accordion.Item value={item.SHORT_NAME} key={item.SHORT_NAME}>
+              <Accordion.Control>{item.NAME}</Accordion.Control>
               <Accordion.Panel>{item.DESCRIPTION}<br />
               <Text weight={100}>Właściciel: {item.FIRM}</Text><br />
                 <Anchor href={`/department/${item.SHORT_NAME}`} target="_blank">
