@@ -9,7 +9,7 @@ import ItemInfo from './views/ItemInfo';
 import RoomInfo from './views/RoomInfo';
 
 export function App() {
-  const roleDB = 1;
+  const roleDB = 0;
   return (
     <Router>
         <Routes>

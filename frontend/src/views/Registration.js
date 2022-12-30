@@ -37,7 +37,7 @@ export default function Registration() {
                     <TextInput
                         placeholder="Wpisz login"
                         label="Login"
-                        description="Login musi mieć co najmniej 4 znaków"
+                        description="Login musi mieć co najmniej 4 znaki"
                         variant="filled"
                         {...form.getInputProps('login')}
                     />
