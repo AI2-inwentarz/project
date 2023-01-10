@@ -4,7 +4,7 @@ export default function Items(data){
     return (
         <Group>
             {
-                Object.values(data).map(item =>(
+                Object.values(data.data).map(item =>(
                     <HoverCard width={280} shadow="md">
                         <HoverCard.Target>
                         <Group sx={{gap: "10px"}}>
