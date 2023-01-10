@@ -3,8 +3,36 @@ import { useForm } from '@mantine/form';
 import '../styles/App.scss';
 
 export default function Login(){
-    const logDB = [{login: "admin", password:"admin"},{login: "jakub", password:"123456"},{login: "login", password:"password"}]
 
+    async function fetchData(login, password) {
+        await fetch("http://localhost:9000/api/auth/authUser", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify({
+                login: login,
+                password: password
+            })
+            })
+            .then(async res => {
+                const tokenObject = await res.json();
+                const response = await fetch('http://localhost:9000/api/db/users/', {
+                    method: "GET",
+                    headers: {
+                        "authorization": `Bearer ${tokenObject.token}`
+                    }
+                });
+                const data = await response;
+                console.log(data);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+
+        
+    }
+    
     const form = useForm({
         validateInputOnChange: true,
         initialValues: {
@@ -12,18 +40,18 @@ export default function Login(){
           password: '',
         },
     
-        validate: {
-            login: (value) =>
-            logDB.filter(data => data.login === value).length > 0 ? null : 'Nie ma podanego loginu w bazie',
-            password: (value, values) =>
-            logDB.find((data) => data.login === values.login && data.password === value) ? null : 'Hasło jest niepoprawne'
-        },
+        // validate: {
+        //     login: (value) =>
+        //     logDB.filter(data => data.login === value).length > 0 ? null : 'Nie ma podanego loginu w bazie',
+        //     password: (value, values) =>
+        //     logDB.find((data) => data.login === values.login && data.password === value) ? null : 'Hasło jest niepoprawne'
+        // },
       });
 
     return(
         <div className='container'>
             <div className='inputContainer'>
-                <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                <form onSubmit={form.onSubmit((values) => {fetchData(values.login, values.password)})}>
                     <TextInput
                         placeholder=" Wpisz Login"
                         label="Login"

@@ -9,7 +9,7 @@ import ItemInfo from './views/ItemInfo';
 import RoomInfo from './views/RoomInfo';
 
 export function App() {
-  const roleDB = 1;
+  const roleDB = 0;
   return (
     <Router>
         <Routes>
@@ -48,7 +48,7 @@ export function App() {
             </>
           }
     
-          <Route path={'*'} element={<div><p>Podana strona nie istnieje</p></div>} />
+          {/* <Route path={'*'} element={<div><p>Podana strona nie istnieje</p></div>} /> */}
 
 
         </Routes>
