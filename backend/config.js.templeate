@@ -1,0 +1,10 @@
+const config = {
+    "jwtsecret":"longsecrettext", //JWT secret, long random text
+    "db_host":"localhost", //database host ip address
+    "db_database":"project_a", //choosed database in database engine 
+    "db_login":"great_login", //login to database engine
+    "db_password":"secure_password", //password to database engine
+    "db_type":"mysql", //type of database engine
+
+};
+module.exports = config;
