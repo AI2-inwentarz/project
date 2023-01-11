@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { PasswordInput, TextInput,Button } from '@mantine/core';
+import { PasswordInput, TextInput,Button, MantineProvider } from '@mantine/core';
+import { showNotification, NotificationsProvider } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import '../styles/App.scss';
 
@@ -12,7 +13,7 @@ export default function Login(){
     error = [];
 
     async function fetchData(login, password) {
-        await fetch("http://"+window.location.hostname+":9000/api/auth/authUser", {
+        await fetch(`http://${window.location.hostname}:9000/api/auth/authUser`, {
             method: "POST",
             headers: {
                 "content-type": "application/json; charset=UTF-8"
@@ -24,20 +25,30 @@ export default function Login(){
             
             })
             .then(async res => {
-                error = [];
                 const status = res.status;
                 if(status !== 200) error.push(status)
 
                 const tokenObject = await res.json();
-                console.log(tokenObject);
 
                 if(!tokenObject.token){
-                    console.log("DDD")
-                    if(tokenObject.message === "Bad username") error.push(1);
-                    if(tokenObject.message === "Bad password") error.push(2);
+                    if(tokenObject.message === "Bad username"){
+                        error.push(1);
+                        showNotification({
+                            title: 'Nie ma takiego loginu w bazie',
+                            message: `Niestety, ale nie wykryliśmy użytkownika ${login}`,
+                            color: 'red'
+                          })
+                    } 
+                    if(tokenObject.message === "Bad password"){
+                        error.push(2);
+                        showNotification({
+                            title: 'Hasło jest niepoprawne',
+                            message: `Użytkownik ${login} istnieje w bazie, lecz Twoje hasło jest nieprawidłowe, spróbuj jeszcze raz`,
+                            color: 'red'
+                          })
+                    } 
                 }
                 else{
-                    error = [];
                     localStorage.setItem("token", tokenObject.token);
                     navigate("/");
                     window.location.reload(true);
@@ -70,24 +81,28 @@ export default function Login(){
     });
 
     return(
-        <div className='container'>
-            <div className='inputContainer'>
-                <form onSubmit={form.onSubmit((values) => {fetchData(values.login, values.password);})}>
-                    <TextInput
-                        placeholder=" Wpisz Login"
-                        label="Login"
-                        variant="filled"
-                        {...form.getInputProps('login')}
-                    />
-                    <PasswordInput
-                        placeholder="Wpisz Hasło"
-                        label="Hasło"
-                        variant="filled"
-                        {...form.getInputProps('password')}
-                    />
-                    <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }}>Zaloguj</Button>
-                </form>
-            </div> 
-        </div>
+        <MantineProvider withNormalizeCSS withGlobalStyles>
+            <NotificationsProvider>
+                <div className='container'>
+                    <div className='inputContainer'>
+                        <form onSubmit={form.onSubmit((values) => {fetchData(values.login, values.password);})}>
+                            <TextInput
+                                placeholder=" Wpisz Login"
+                                label="Login"
+                                variant="filled"
+                                {...form.getInputProps('login')}
+                            />
+                            <PasswordInput
+                                placeholder="Wpisz Hasło"
+                                label="Hasło"
+                                variant="filled"
+                                {...form.getInputProps('password')}
+                            />
+                            <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }}>Zaloguj</Button>
+                        </form>
+                    </div> 
+                </div>
+            </NotificationsProvider>
+        </MantineProvider>
     )
 }
