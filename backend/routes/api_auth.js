@@ -34,6 +34,7 @@ const authUser = async (req, res) => {
                 login: req.body.login
             }
         });
+        if(!user){res.json({"message":"Bad username"});return false;}
         if(user && bcrypt.compareSync(req.body.password, user.password)){
             var data = {
                 "user":{"id":user.id,"role":user.role}
@@ -42,7 +43,9 @@ const authUser = async (req, res) => {
             console.log(user,token);
             res.json(token ? {"token":token} : {"message":"Error generating token"});
         }else{
-            res.sendStatus(401);
+            res.json({"message":"Bad password"});
+            // res.sendStatus(401);
+            return false;
             // res.json();
         }
     } catch (err) {
