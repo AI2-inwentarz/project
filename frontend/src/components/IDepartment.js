@@ -19,8 +19,8 @@ export default function IDepartment(data) {
               <Accordion.Control>{item.name}</Accordion.Control>
               <Accordion.Panel>{item.description}<br />
               {item.shortdescription}
-              <Text weight={100}>Właściciel: {item.affilation}</Text><br />
-                <Anchor href={`/department/${item.shortname}`} target="_blank">
+              <Text weight={100}>Właściciel: {item.affiliation }</Text><br />
+                <Anchor href={`/department/${item.id}`} target="_blank">
                     Zobacz szczegóły
                 </Anchor>
               </Accordion.Panel> 

@@ -1,13 +1,51 @@
+import {useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
 import { Container, Text, Accordion, Anchor, Autocomplete, NumberInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconHome2, IconPhoneCall, IconPlus } from '@tabler/icons';
+import { IconHome2, IconClockHour4, IconPlus } from '@tabler/icons';
 import { IDepartmentData } from '../exampleData/IDepartmentData';
 import { IRoomsData } from '../exampleData/IRoomsData';
 
 
 export default function DepartmentInfo(){
     const { name } = useParams();
+
+    const [data, setData] = useState();
+
+    async function fetchData() {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentsForUser`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json; charset=UTF-8",
+                "authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            })
+            .then(async res => {
+                const resObject = await res.json();
+                console.log(resObject)
+                setData(resObject); 
+            }) 
+    }
+
+    async function fetchRooms() {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentsForUser`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json; charset=UTF-8",
+                "authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            })
+            .then(async res => {
+                const resObject = await res.json();
+                console.log(resObject)
+                setData(resObject); 
+            }) 
+    }
+    
+    useEffect(()=>{
+        fetchData();
+        fetchRooms();
+    },[])
 
     let INumberRooms = [];
     Object.values(IRoomsData).map(data => {
@@ -34,20 +72,17 @@ export default function DepartmentInfo(){
 
     return(
         <Container size="xs" px="xs" sx={{textAlign: "center"}}>
-            {
-                Object.values(IDepartmentData).map(item =>{
-                    if(item.SHORT_NAME === name) {
-                        return (
-                            <div key={item.NAME}>
-                                <h2>{item.NAME}</h2>
-                                <h4>{item.DESCRIPTION}</h4>
-                                <Text weight={100}>Właściciel: {item.FIRM}</Text><br />
-                                <Text><IconHome2 size={20} />{item.ADDRESS}</Text><br />
-                                <Text><IconPhoneCall size={20} />{item.PHONE}</Text><br />
-                            </div>
-                        )
-                    }
-                    else return null
+            { data &&
+                Object.values(data).map(item =>{
+                    return (
+                        <div key={item.name}>
+                            <h2>{item.name}</h2>
+                            <h4>{item.description}</h4>
+                            <Text weight={100}>Właściciel: {item.affiliation }</Text><br />
+                            <Text><IconHome2 size={20} />{item.address}</Text><br />
+                            <Text><IconClockHour4 size={20} />{item.createdAt}</Text><br />
+                        </div>
+                    )
                 })
             }
 
