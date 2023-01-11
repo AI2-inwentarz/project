@@ -69,6 +69,7 @@ const registerUser = async (req, res) => {
 
         var userParams = req.body;
         userParams.password = hashedpassword;
+        userParams.role = 0;
 
         const user = await User.create(userParams);
 
