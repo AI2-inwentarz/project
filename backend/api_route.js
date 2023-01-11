@@ -41,9 +41,10 @@ const {authUser,registerUser} = require("./routes/api_auth.js");
 router.post('/auth/authUser', authUser);
 router.post('/auth/registerUser', registerUser);
 
-const {getDepartmentsForUser,getRoomsForDepartment} = require("./routes/api_user.js");
+const {getDepartmentsForUser,getRoomsForDepartment,getUserInfo} = require("./routes/api_user.js");
 router.get('/user/getDepartmentsForUser', getDepartmentsForUser);
 router.get('/user/getRoomsForDepartment', getRoomsForDepartment);
+router.get('/user/getUserInfo', getUserInfo);
 
 const {getUsers,getUserById,createUser,updateUser,deleteUser} = require("./routes/api_db_User.js");
 router.get('/db/users', mustBeAdmin, getUsers);

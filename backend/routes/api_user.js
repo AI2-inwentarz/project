@@ -71,4 +71,22 @@ const getRoomsForDepartment = async (req, res) => {
     }
 }
 
-module.exports = {getDepartmentsForUser,getRoomsForDepartment};
+// Get User by id
+const getUserInfo = async (req, res) => {
+    if(!req.auth.user.id){return;}
+    var userId = req.auth.user.id;
+    try {
+        const user = await User.findOne({
+            where: {
+                id: userId
+            }
+        });
+        var tempuser = user;
+        tempuser.password = null;
+        res.send(user ? user : {"message":"No record found"});
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports = {getDepartmentsForUser,getRoomsForDepartment,getUserInfo};
