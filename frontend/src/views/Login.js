@@ -12,7 +12,7 @@ export default function Login(){
     error = [];
 
     async function fetchData(login, password) {
-        await fetch("http://localhost:9000/api/auth/authUser", {
+        await fetch("http://"+window.location.hostname+":9000/api/auth/authUser", {
             method: "POST",
             headers: {
                 "content-type": "application/json; charset=UTF-8"
