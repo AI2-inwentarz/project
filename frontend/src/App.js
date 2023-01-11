@@ -8,6 +8,7 @@ import Login from './views/Login';
 import Registration from './views/Registration';
 import ItemInfo from './views/ItemInfo';
 import RoomInfo from './views/RoomInfo';
+import Main from './views/Main';
 
 
 export function App() {
@@ -19,7 +20,7 @@ export function App() {
           {
             !localStorage.getItem("token") &&
             <>
-              <Route path={'/'} element={<IAppShell role={0} contain={<div>main</div>} />} />
+              <Route path={'/'} element={<IAppShell role={0} contain={<Main />} />} />
               <Route path={'login'} element={<IAppShell role={0} contain={<Login />} />}/>
               <Route path={'register'} element={<IAppShell role={0} contain={<Registration />} />} />
             </>
@@ -28,7 +29,7 @@ export function App() {
           {
             localStorage.getItem("token") &&
             <>
-              <Route path={'/'} element={<IAppShell role={1} contain={<div>main</div>} />} />
+              <Route path={'/'} element={<IAppShell role={1} contain={<Main />} />} />
 
               <Route path={'item/:name'} element={<IAppShell role={1} contain={<ItemInfo />} />}/>
 
