@@ -45,6 +45,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const {xss} = require("express-xss-sanitizer");
+app.use(xss());
+
 var apiRoute = require("./api_route.js");
 app.use("/api", apiRoute);
 
