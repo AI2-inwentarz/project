@@ -8,8 +8,14 @@ export function IUser() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
 
+  function logout(){
+    localStorage.removeItem("token");
+    navigate("/");
+    window.location.reload(true);
+  }
+
   return (
-    <Box
+    <Box 
       sx={{
         paddingTop: theme.spacing.sm,
         borderTop: `1px solid ${
@@ -63,7 +69,7 @@ export function IUser() {
           },
         })}
         onClick={()=>{
-          navigate("/");
+          logout();
         }}
       >
         <Group sx={{gap: "26px"}}>
