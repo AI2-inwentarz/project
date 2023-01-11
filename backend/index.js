@@ -28,8 +28,8 @@ const {Users} = require("./db_models.js");
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-  await sequelize.sync({ force: true });
-  if(true){require("./load_example_data.js");}
+  // await sequelize.sync({ force: true });
+  // if(true){require("./load_example_data.js");}
 })();
 // (async () => {
 //   await sequelize.sync({ force: true });
