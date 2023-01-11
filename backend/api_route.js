@@ -41,6 +41,9 @@ const {authUser,registerUser} = require("./routes/api_auth.js");
 router.post('/auth/authUser', authUser);
 router.post('/auth/registerUser', registerUser);
 
+const {getDepartmentsForUser} = require("./routes/api_user.js");
+router.get('/user/getDepartmentsForUser', getDepartmentsForUser);
+
 const {getUsers,getUserById,createUser,updateUser,deleteUser} = require("./routes/api_db_User.js");
 router.get('/db/users', mustBeAdmin, getUsers);
 router.get('/db/users/:id', mustBeAdmin,getUserById);
