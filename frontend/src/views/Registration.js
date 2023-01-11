@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 import '../styles/App.scss';
 
+let error;
+
 export default function Registration() {
 
     const navigate = useNavigate();
+    error = [];
 
     async function fetchData(email, login, name, surname,phone, password) {
-        await fetch("http://localhost:9000/api/auth/registerUser", {
+        await fetch(`http://${window.location.hostname}:9000/api/auth/registerUser`, {
             method: "POST",
             headers: {
                 "content-type": "application/json; charset=UTF-8"
@@ -24,12 +27,15 @@ export default function Registration() {
                 password: password,
             })
             
-            })
-            .then(async res => {
+            }).then(async res => {
                 const status = res.status;
 
                 const resObject = await res.json();
                 console.log(resObject);
+
+                if(resObject.message && resObject.message !== "User Created"){
+                    error.push(resObject.message);
+                }
 
                 if(resObject.message === "User Created"){
                     setTimeout(changePage, 3000);
@@ -42,20 +48,21 @@ export default function Registration() {
                     showNotification({
                         title: 'Gratulacje',
                         message: `${login} zostałeś zarejestrowany!`,
+                        color: 'green'
+                      })
+                } else if(resObject.message === "Email is taken"){
+                    showNotification({
+                        title: 'Ten email jest już zajęty',
+                        message: `Niestety musisz wpisać inny email niż: ${email}`,
+                        color: 'red'
+                      })
+                } else if(resObject.message === "Login is taken"){
+                    showNotification({
+                        title: 'Ten login jest już zajęty',
+                        message: `Niestety musisz wpisać inny email niż: ${login}`,
+                        color: 'red'
                       })
                 }
-
-                // if(!tokenObject.token){
-                //     if(tokenObject.message === "Bad username") 
-                //     if(tokenObject.message === "Bad password") 
-                // }
-                // else{
-                //     error = [];
-                //     localStorage.setItem("token", tokenObject.token);
-                //     navigate("/");
-                //     window.location.reload(true);
-                // } 
-                
             }) 
     }
     const form = useForm({
@@ -71,9 +78,15 @@ export default function Registration() {
         },
     
         validate: {
-          email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Nieprawidłowy adres'),
+          email: (value) => {
+            if(!/^\S+@\S+$/.test(value)) return 'Nieprawidłowy adres';
+            if(error.includes("Email is taken")) return "Podany email istnieje już w bazie"
+          },
           phone: (value) => (/^(\d{9}|)$/.test(value) ? null : 'Nieprawidłowy format numeru telefonu'), 
-          login: (value) => (value.length < 4 ? 'Zbyt krótki login' : null),
+          login: (value) => {
+            if(value.length < 4) return 'Zbyt krótki login';
+            if(error.includes("Login is taken")) return "Podany login już istnieje w bazie"
+          },
           password: (value) => (value.length < 8 ? 'Zbyt krótkie hasło' : null),
           confirmPassword: (value, values) =>
             value !== values.password ? 'Hasła nie są identyczne' : null
