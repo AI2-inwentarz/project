@@ -3,7 +3,7 @@ const {Department} = require("../db_models.js");
 
 const { Op } = require("sequelize");
 
-
+const {userHasAccessToDepartment} = require("../util.js");
 
 
 
@@ -49,4 +49,26 @@ const getDepartmentsForUser = async (req, res) => {
     }
 }
 
-module.exports = {getDepartmentsForUser};
+// Get Department by id
+const getRoomsForDepartment = async (req, res) => {
+    try {
+        if(!req.auth.user.id){return;}
+        var userId = req.auth.user.id;
+        var departmentId = req.body.department_id;
+        console.log(req.body);
+        // console.log(req.params);
+        console.log(await userHasAccessToDepartment(req.auth,departmentId));
+        if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+        // console.log(await userHasAccessToDepartment(req.auth,departmentId));
+        var department = await Department.findByPk(departmentId);
+        if(!department){res.json(department ? department : {"message":"No records found"});return false;}
+        var rooms = await department.getRooms();
+
+        
+        res.send(rooms ? rooms : {"message":"No record found"});
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports = {getDepartmentsForUser,getRoomsForDepartment};
