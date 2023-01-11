@@ -1,10 +1,8 @@
 // Import User Model
 const {User} = require("../db_models.js");
-const {authIsAdmin} = require("../util.js");
  
 // Get all Users
 const getUsers = async (req, res) => {
-    if(!authIsAdmin(req.auth)){res.sendStatus(401);return;}
     try {
         const users = await User.findAll();
         res.json(users ? users : {"message":"No records found"});
@@ -22,7 +20,7 @@ const getUserById = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.send(user ? user : {"message":"No user found"});
+        res.send(user ? user : {"message":"No record found"});
     } catch (err) {
         console.log(err);
     }
@@ -31,9 +29,10 @@ const getUserById = async (req, res) => {
 // Create a new User
 const createUser = async (req, res) => {
     try {
-        await User.create(req.body);
+        var user = await User.create(req.body);
+        console.log(user);
         res.json({
-            "message": "User Created"
+            "message": "Record Created"
         });
     } catch (err) {
         console.log(err);
@@ -59,7 +58,7 @@ const updateUser = async (req, res) => {
 // Delete User by id
 const deleteUser = async (req, res) => {
     try {
-        await Product.destroy({
+        await User.destroy({
             where: {
                 id: req.params.id
             }
