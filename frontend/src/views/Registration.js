@@ -1,9 +1,63 @@
-import { TextInput, PasswordInput, Button } from '@mantine/core';
+import { TextInput, PasswordInput, Button, MantineProvider } from '@mantine/core';
+import { showNotification, NotificationsProvider } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
+import { useNavigate } from "react-router-dom";
 
 import '../styles/App.scss';
 
 export default function Registration() {
+
+    const navigate = useNavigate();
+
+    async function fetchData(email, login, name, surname,phone, password) {
+        await fetch("http://localhost:9000/api/auth/registerUser", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify({
+                email: email,
+                login: login,
+                name: name,
+                surname: surname,
+                phone: phone,
+                password: password,
+            })
+            
+            })
+            .then(async res => {
+                const status = res.status;
+
+                const resObject = await res.json();
+                console.log(resObject);
+
+                if(resObject.message === "User Created"){
+                    setTimeout(changePage, 3000);
+
+                    function changePage() {
+                        navigate("/");
+                        window.location.reload(true);
+                    }
+
+                    showNotification({
+                        title: 'Gratulacje',
+                        message: `${login} zostałeś zarejestrowany!`,
+                      })
+                }
+
+                // if(!tokenObject.token){
+                //     if(tokenObject.message === "Bad username") 
+                //     if(tokenObject.message === "Bad password") 
+                // }
+                // else{
+                //     error = [];
+                //     localStorage.setItem("token", tokenObject.token);
+                //     navigate("/");
+                //     window.location.reload(true);
+                // } 
+                
+            }) 
+    }
     const form = useForm({
         validateInputOnChange: true,
         initialValues: {
@@ -11,6 +65,7 @@ export default function Registration() {
           login: '',
           name: '',
           surname: '',
+          phone: '',
           password: '',
           confirmPassword: '',
         },
@@ -26,9 +81,11 @@ export default function Registration() {
       });
     
     return (
+        <MantineProvider withNormalizeCSS withGlobalStyles>
+        <NotificationsProvider>
         <div className='container'>
             <div className='inputContainer'>
-                <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                <form onSubmit={form.onSubmit((values) => fetchData(values.email, values.login, values.name, values.surname, values.phone, values.password))}>
                     <TextInput
                         placeholder="Wpisz login"
                         label="Login"
@@ -41,6 +98,7 @@ export default function Registration() {
                         placeholder="Wpisz maila"
                         label="Email"
                         variant="filled"
+                        withAsterisk
                         {...form.getInputProps('email')}
                     />
                     <TextInput
@@ -82,5 +140,7 @@ export default function Registration() {
                 </form>
             </div>
         </div>
+        </NotificationsProvider>
+    </MantineProvider>
     );
 }
