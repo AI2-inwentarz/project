@@ -55,13 +55,27 @@ const authUser = async (req, res) => {
 }
  
 // Create a new User
-const createUser = async (req, res) => {
+const registerUser = async (req, res) => {
     try {
-        await User.create(req.body);
-        res.json({
-            "message": "User Created"
-        });
+        console.log(req.body);
+        if(!req || !req.body || !req.body.login){res.json({"message":"Login is required"});return;}
+        if(!req || !req.body || !req.body.email){res.json({"message":"Email is required"});return;}
+        if(!req || !req.body || !req.body.password){res.json({"message":"Password is required"});return;}
+        if(await User.findOne({where:{login:req.body.login}})){res.json({"message":"Login is taken"});return;}
+        if(await User.findOne({where:{email:req.body.email}})){res.json({"message":"Email is taken"});return;}
+
+        const salt = await bcrypt.genSaltSync(12);
+        var hashedpassword = bcrypt.hashSync(req.body.password, salt);
+
+        var userParams = req.body;
+        userParams.password = hashedpassword;
+
+        const user = await User.create(userParams);
+
+        // await User.create(req.body);
+        if(user){res.json({"message": "User Created"});}else{res.json({"message": "Error durning creating user"});}
     } catch (err) {
+        res.sendStatus(400);
         console.log(err);
     }
 }
@@ -99,4 +113,4 @@ const deleteUser = async (req, res) => {
 }
 
 
-module.exports = {authUser};
+module.exports = {authUser,registerUser};

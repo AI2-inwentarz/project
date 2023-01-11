@@ -37,8 +37,9 @@ router.use(function (err, req, res, next) {
 });
 
 
-const {authUser} = require("./routes/api_auth.js");
+const {authUser,registerUser} = require("./routes/api_auth.js");
 router.post('/auth/authUser', authUser);
+router.post('/auth/registerUser', registerUser);
 
 const {getUsers,getUserById,createUser,updateUser,deleteUser} = require("./routes/api_db_User.js");
 router.get('/db/users', mustBeAdmin, getUsers);
