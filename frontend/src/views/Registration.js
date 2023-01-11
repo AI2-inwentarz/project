@@ -10,12 +10,14 @@ export default function Registration() {
           email: '',
           login: '',
           name: '',
+          surname: '',
           password: '',
           confirmPassword: '',
         },
     
         validate: {
           email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Nieprawidłowy adres'),
+          phone: (value) => (/^(\d{9}|)$/.test(value) ? null : 'Nieprawidłowy format numeru telefonu'), 
           login: (value) => (value.length < 4 ? 'Zbyt krótki login' : null),
           password: (value) => (value.length < 8 ? 'Zbyt krótkie hasło' : null),
           confirmPassword: (value, values) =>
@@ -28,24 +30,36 @@ export default function Registration() {
             <div className='inputContainer'>
                 <form onSubmit={form.onSubmit((values) => console.log(values))}>
                     <TextInput
-                        placeholder="Wpisz maila"
-                        label="Email"
-                        variant="filled"
-                        withAsterisk
-                        {...form.getInputProps('email')}
-                    />
-                    <TextInput
                         placeholder="Wpisz login"
                         label="Login"
                         description="Login musi mieć co najmniej 4 znaki"
                         variant="filled"
+                        withAsterisk
                         {...form.getInputProps('login')}
                     />
                     <TextInput
-                        placeholder="Wpisz imie i nazwisko"
-                        label="Imie i nazwisko"
+                        placeholder="Wpisz maila"
+                        label="Email"
+                        variant="filled"
+                        {...form.getInputProps('email')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz imie"
+                        label="Imie"
                         variant="filled"
                         {...form.getInputProps('name')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz nazwisko"
+                        label="Nazwisko"
+                        variant="filled"
+                        {...form.getInputProps('surname')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz numer telefonu"
+                        label="Telefon"
+                        variant="filled"
+                        {...form.getInputProps('phone')}
                     />
                     <PasswordInput
                         placeholder="Wpisz hasło"

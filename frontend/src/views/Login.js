@@ -1,12 +1,15 @@
+import {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { PasswordInput, TextInput,Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import '../styles/App.scss';
 
+let error;
+
 export default function Login(){
 
     const navigate = useNavigate();
-
+    error = [];
 
     async function fetchData(login, password) {
         await fetch("http://localhost:9000/api/auth/authUser", {
@@ -18,13 +21,29 @@ export default function Login(){
                 login: login,
                 password: password
             })
+            
             })
             .then(async res => {
+                error = [];
+                const status = res.status;
+                if(status !== 200) error.push(status)
+
                 const tokenObject = await res.json();
-                // if(!localStorage.getItem("token")) 
-                localStorage.setItem("token", tokenObject.token);
-                if(res.ok) navigate("/");
-            })
+                console.log(tokenObject);
+
+                if(!tokenObject.token){
+                    console.log("DDD")
+                    if(tokenObject.message === "Bad username") error.push(1);
+                    if(tokenObject.message === "Bad password") error.push(2);
+                }
+                else{
+                    error = [];
+                    localStorage.setItem("token", tokenObject.token);
+                    navigate("/");
+                    window.location.reload(true);
+                } 
+                
+            }) 
     }
 
     const form = useForm({
@@ -34,28 +53,26 @@ export default function Login(){
           password: '',
         },
     
-        // validate: {
-        //     login: (value) =>
-        //     users && (users.filter(data => data.login === value).length > 0 ? null : 'Nie ma podanego loginu w bazie'),
-        //     password: (value, values) => {
-        //         if(users && users.filter(data => data.login === value).length > 0){
-        //             const user = users.find((data) => data.login === values.login);
-        //             const verifyLog = bcrypt.compare(value, user.password).then(isMatch => {
-        //                 if (isMatch) return true;
-        //                 else return false;
-        //             }).catch(err => {
-        //                 console.log(err)
-        //                 return false;
-        //             })
-        //         }}
-        // },
-
+        validate: {
+            login: (value) => {
+                if(error.includes(1)) return "Nie ma podanego loginu w bazie";
+                else if(error.includes(400)) return "Nieprawidłowe żądanie";
+                else if(error.includes(401)) return "Wygasł token logowania";
+                else if(value.length < 3) return 'Login musi mieć co najmniej 3 znaki';
+                
+            },
+            password: (value) => {
+                if(error.includes(2)) return "Nieprawidłowe hasło";
+                else if(value.length < 3) return 'Login musi mieć co najmniej 3 znaki';
+                else return null;
+            } 
+        },
     });
 
     return(
         <div className='container'>
             <div className='inputContainer'>
-                <form onSubmit={form.onSubmit((values) => {fetchData(values.login, values.password)})}>
+                <form onSubmit={form.onSubmit((values) => {fetchData(values.login, values.password);})}>
                     <TextInput
                         placeholder=" Wpisz Login"
                         label="Login"
