@@ -1,8 +1,8 @@
+
 import { Accordion, Anchor, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons';
-import { IDepartmentData } from '../exampleData/IDepartmentData';
 
-export default function IDepartment() {
+export default function IDepartment(data) {
   return (
     <>
       <h2>
@@ -14,15 +14,16 @@ export default function IDepartment() {
               transform: 'rotate(45deg)',
             },
         }}>
-          {Object.values(IDepartmentData).map(item =>(
-            <Accordion.Item value={item.SHORT_NAME} key={item.SHORT_NAME}>
-              <Accordion.Control>{item.NAME}</Accordion.Control>
-              <Accordion.Panel>{item.DESCRIPTION}<br />
-              <Text weight={100}>Właściciel: {item.FIRM}</Text><br />
-                <Anchor href={`/department/${item.SHORT_NAME}`} target="_blank">
+          { data && Object.values(data.data).map(item =>(
+            <Accordion.Item value={item.shortname} key={item.shortname}>
+              <Accordion.Control>{item.name}</Accordion.Control>
+              <Accordion.Panel>{item.description}<br />
+              {item.shortdescription}
+              <Text weight={100}>Właściciel: {item.affilation}</Text><br />
+                <Anchor href={`/department/${item.shortname}`} target="_blank">
                     Zobacz szczegóły
                 </Anchor>
-              </Accordion.Panel>
+              </Accordion.Panel> 
             </Accordion.Item>
           ))}
       </Accordion>
