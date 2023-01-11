@@ -1,13 +1,16 @@
 // Import User Model
 const {User} = require("../db_models.js");
+const {authIsAdmin} = require("../util.js");
  
 // Get all Users
 const getUsers = async (req, res) => {
+    if(!authIsAdmin(req.auth)){res.sendStatus(401);return;}
     try {
         const users = await User.findAll();
-        res.send(users ? users : {});
+        res.json(users ? users : {"message":"No records found"});
     } catch (err) {
-        console.log(err);
+        console.trace(err);
+        res.sendStatus(400);
     }
 }
  
@@ -19,8 +22,7 @@ const getUserById = async (req, res) => {
                 id: req.params.id
             }
         });
-        // console.log(user)
-        res.send(user ? user : {"message":"There is no such user"});
+        res.send(user ? user : {"message":"No user found"});
     } catch (err) {
         console.log(err);
     }
