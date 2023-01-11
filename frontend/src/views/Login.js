@@ -1,8 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { PasswordInput, TextInput,Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import '../styles/App.scss';
 
 export default function Login(){
+
+    const navigate = useNavigate();
+
 
     async function fetchData(login, password) {
         await fetch("http://localhost:9000/api/auth/authUser", {
@@ -17,22 +21,12 @@ export default function Login(){
             })
             .then(async res => {
                 const tokenObject = await res.json();
-                const response = await fetch('http://localhost:9000/api/db/users/', {
-                    method: "GET",
-                    headers: {
-                        "authorization": `Bearer ${tokenObject.token}`
-                    }
-                });
-                const data = await response;
-                console.log(data);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-
-        
+                // if(!localStorage.getItem("token")) 
+                localStorage.setItem("token", tokenObject.token);
+                if(res.ok) navigate("/");
+            })
     }
-    
+
     const form = useForm({
         validateInputOnChange: true,
         initialValues: {
@@ -42,11 +36,21 @@ export default function Login(){
     
         // validate: {
         //     login: (value) =>
-        //     logDB.filter(data => data.login === value).length > 0 ? null : 'Nie ma podanego loginu w bazie',
-        //     password: (value, values) =>
-        //     logDB.find((data) => data.login === values.login && data.password === value) ? null : 'Hasło jest niepoprawne'
+        //     users && (users.filter(data => data.login === value).length > 0 ? null : 'Nie ma podanego loginu w bazie'),
+        //     password: (value, values) => {
+        //         if(users && users.filter(data => data.login === value).length > 0){
+        //             const user = users.find((data) => data.login === values.login);
+        //             const verifyLog = bcrypt.compare(value, user.password).then(isMatch => {
+        //                 if (isMatch) return true;
+        //                 else return false;
+        //             }).catch(err => {
+        //                 console.log(err)
+        //                 return false;
+        //             })
+        //         }}
         // },
-      });
+
+    });
 
     return(
         <div className='container'>
@@ -56,14 +60,12 @@ export default function Login(){
                         placeholder=" Wpisz Login"
                         label="Login"
                         variant="filled"
-                        withAsterisknpm
                         {...form.getInputProps('login')}
                     />
                     <PasswordInput
                         placeholder="Wpisz Hasło"
                         label="Hasło"
                         variant="filled"
-                        withAsterisknpm
                         {...form.getInputProps('password')}
                     />
                     <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }}>Zaloguj</Button>
