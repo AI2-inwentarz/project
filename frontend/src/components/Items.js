@@ -1,13 +1,15 @@
-import { HoverCard, Text, Group, Button, MantineProvider, TextInput, Autocomplete } from '@mantine/core';
+import { HoverCard, Text, Group, Button, MantineProvider, TextInput, Select } from '@mantine/core';
 import { showNotification, NotificationsProvider } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {useEffect, useState} from "react";
 
 export default function Items(data){
-
-    const { departamentsID, name } = useParams();
+    const { departmentID, roomID  } = useParams();
+    //console.log(departmentID, roomID);
     const [categories, setCategories] = useState();
+
+    const navigate = useNavigate();
 
     const json = localStorage.getItem("token")
     const item = JSON.parse(json)
@@ -20,8 +22,8 @@ export default function Items(data){
           desc: '',
           tag: '',
           idk: '',
-          idp: name,
-          idd: departamentsID,
+          idp: roomID,
+          idd: departmentID,
         },
       });
 
@@ -31,7 +33,7 @@ export default function Items(data){
       },[])
       
       async function getCategories(){
-        await fetch(`http://${window.location.hostname}:9000/api/db/itemCategories/`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentCategories/${departmentID}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -53,7 +55,7 @@ export default function Items(data){
             name: name,
             description: desc,
             inventory_tag: tag,
-            category_ud: idk,
+            category_id: idk,
             room_id: idp,
             department_id: idd
         })
@@ -73,25 +75,6 @@ export default function Items(data){
                         window.location.reload(true);
                     }
             } 
-        }) 
-    }
-
-    async function editData(id) {
-        form.setValues({
-            name: "a" ,
-            desc: "b" ,
-            tag: "c",
-          })
-        await fetch(`http://${window.location.hostname}:9000/api/user/items/${id}`, {
-            method: "PUT",
-            headers: {
-                "content-type": "application/json; charset=UTF-8",
-                "authorization": `Bearer ${jwt}`
-        },
-        }).then(async res => {
-            const jsonObject = await res.json();   
-            console.log(jsonObject); 
-            
         }) 
     }
 
@@ -126,13 +109,13 @@ export default function Items(data){
             <h2>Przedmioty</h2>
             <Group>
                 { data &&
-                    Object.values(data.data).map(item =>(
-                        <HoverCard width={280} shadow="md" key={item.name}>
+                    Object.values(data.data).map((item,i) =>(
+                        <HoverCard width={280} shadow="md" key={item.name+i}>
                             <HoverCard.Target>
                             <Group sx={{gap: "10px"}}>
                                 <Text weight={600} size={20}>{item.name}</Text>
                                 <Text weight={300} size={20}>({item.inventory_tag})</Text>
-                                <Button onClick={()=> editData(item.id)}>Edytuj</Button>
+                                <Button onClick={()=>navigate(`/room/${departmentID}/${roomID}/${item.id}/edit`)}>Edytuj</Button>
                                 <Button onClick={()=>delData(item.id)}>Usuń</Button>
                             </Group>
                             </HoverCard.Target>
@@ -170,11 +153,11 @@ export default function Items(data){
                         {...form.getInputProps('tag')}
                     />
                     {categories && 
-                        <Autocomplete
-                            label="Nazwa"
-                            placeholder="Wybierz jedną"
-                            data={Object.values(categories).map(item => (item.id).toString())}
-                            {...form.getInputProps('number')}
+                        <Select
+                            label="Wybierz ID kategorii"
+                            placeholder="jedną z listy"
+                            data={Object.values(categories).map(item => ({value: item.id, label: item.name}))}
+                            {...form.getInputProps('idk')}
                         />
                     }
                     <TextInput

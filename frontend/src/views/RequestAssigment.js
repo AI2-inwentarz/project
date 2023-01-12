@@ -42,13 +42,11 @@ export default function RequestAssigment(){
               transform: 'rotate(45deg)',
             },
         }}>
-          { data && Object.values(data.depardments).map(item =>{
-            return Object.values(data.users).map(user =>(
-              item.owner_id === user.id &&
-                  <Accordion.Item value={item.name} key={item.name}>
-                    <Accordion.Control>{item.name}</Accordion.Control>
+          { data &&
+            Object.values(data.users).map(user =>(
+                  <Accordion.Item value={user.firstname} key={user.firstname}>
+                    <Accordion.Control>{user.role > 0 ? "Administrator: " : "Użytkownik: "}  {user.firstname} {user.surname}</Accordion.Control>
                     <Accordion.Panel>
-                      <Text weight={200}>Właściciel: {user.firstname} {user.surname} </Text>
                       <Text weight={100}>{user.job_title}</Text>
                       <Anchor href={`mailto:${user.email}`}target="_blank">
                           <Button sx={{backgroundColor: "#ad8881", '&:hover': {backgroundColor:"#4d331f"}}}> Wyślij maila</Button>
@@ -57,7 +55,7 @@ export default function RequestAssigment(){
                     </Accordion.Panel> 
                   </Accordion.Item>
             
-        ))})}
+        ))}
       </Accordion>
     </>
     )

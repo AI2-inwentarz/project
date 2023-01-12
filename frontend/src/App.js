@@ -10,6 +10,7 @@ import ItemInfo from './views/ItemInfo';
 import RoomInfo from './views/RoomInfo';
 import Main from './views/Main';
 import RequestAssigment from './views/RequestAssigment';
+import RoomInfoEdit from './views/RoomInfoEdit';
 
 let timejwt;
 
@@ -44,7 +45,8 @@ export function App() {
 
               <Route path={'item/:name'} element={<IAppShell role={1} contain={<ItemInfo />} />}/>
 
-              <Route path={'room/:departamentsID/:name'} element={<IAppShell role={1} contain={<RoomInfo />} />} />
+              <Route path={'room/:departmentID/:roomID'} element={<IAppShell role={1} contain={<RoomInfo />} />} />
+              <Route path={'room/:departmentID/:roomID/:itemID/edit'} element={<IAppShell role={1} contain={<RoomInfoEdit />} />} />
 
               <Route path={'departments'} element={<IAppShell role={1} contain={<Departments />} />} />
               <Route path={'department/:name'} element={<IAppShell role={1} contain={<DepartmentInfo />} />} />

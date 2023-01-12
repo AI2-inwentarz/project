@@ -8,11 +8,12 @@ export default function RoomInfo(){
     const item = JSON.parse(json);
     const jwt = item.value;
 
-    const { name } = useParams();
+    const { departmentID, roomID  } = useParams();
+    //console.log(departmentID, roomID);
     const [data, setData] = useState();
 
     async function fetchData(room) {
-        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentItems/${room}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentItems/${departmentID}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -27,7 +28,7 @@ export default function RoomInfo(){
     }
 
     useEffect(()=>{
-        fetchData(name)
+        fetchData()
     },[])
     return(<>{data && <Items data={data}/>}</>)
 }
