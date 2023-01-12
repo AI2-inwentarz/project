@@ -121,4 +121,30 @@ const getDepartmentCategories = async (req, res) => {
     }
 }
 
-module.exports = {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories};
+// Get User by id
+const getDepartmentItems = async (req, res) => {
+    try {
+        if(!req.auth.user.id){res.sendStatus(401);return false;}
+        if(!req.params.id){res.send({"message":"Id is needed in params"});return false;}
+        // console.log(req.params.id);
+        var userId = req.auth.user.id;
+        var departmentId = req.params.id;
+        // console.log(req.body);
+        // console.log(req.params);
+        // console.log(req);
+        // console.log(await userHasAccessToDepartment(req.auth,departmentId));
+        if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+        // console.log(await userHasAccessToDepartment(req.auth,departmentId));
+        var department = await Department.findByPk(departmentId);
+        if(!department){res.json(department ? department : {"message":"No records found"});return false;}
+        var items = await department.getItems();
+
+        
+        res.send(items ? items : {"message":"No record found"});
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+}
+
+module.exports = {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems};
