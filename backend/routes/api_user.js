@@ -260,6 +260,28 @@ const deleteDepartmentUser = async (req, res) => {
     }
 }
 
+// Create a new UserDepartmentRole
+const createDepartmentUserDepartmentRole = async (req, res) => {
+    try {
+        if(!req.auth.user.id){res.sendStatus(401);return false;}
+        if(!req.body.user_id){res.send({"message":"user_id is needed in body"});return false;}
+        req.body.id = null;
+        req.body.role = 0;
+        var departmentId = req.body.department_id;
+
+        if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+        
+        var userDepartmentRole = await UserDepartmentRole.create(req.body);
+        console.log(userDepartmentRole);
+        res.json({
+            "message": "Record Created"
+        });
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+}
+
 module.exports = {
     getDepartmentsForUser,
     getRoomsForDepartment,
@@ -268,5 +290,6 @@ module.exports = {
     getDepartmentItems,
     getContacts,
     getDepartmentUsers,
-    deleteDepartmentUser
+    deleteDepartmentUser,
+    createDepartmentUserDepartmentRole
 };
