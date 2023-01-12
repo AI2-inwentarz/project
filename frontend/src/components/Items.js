@@ -77,6 +77,11 @@ export default function Items(data){
     }
 
     async function editData(id) {
+        form.setValues({
+            name: "a" ,
+            desc: "b" ,
+            tag: "c",
+          })
         await fetch(`http://${window.location.hostname}:9000/api/user/items/${id}`, {
             method: "PUT",
             headers: {
