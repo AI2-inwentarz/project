@@ -5,6 +5,7 @@ const config = {
     "db_login":"great_login", //login to database engine
     "db_password":"secure_password", //password to database engine
     "db_type":"mysql", //type of database engine
+    "seedIfEmpty":true,
 
 };
 module.exports = config;

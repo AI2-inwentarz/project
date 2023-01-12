@@ -31,9 +31,11 @@ const {Users} = require("./db_models.js");
   // await sequelize.sync({ force: true });
   // if(true){require("./load_example_data.js");}
 })();
-// (async () => {
-//   await sequelize.sync({ force: true });
-// })();
+const {ShouldLoadExampleData,LoadExampleData} = require("./seed.js");
+(async () => {
+  // await sequelize.sync({ force: true });
+  if(await ShouldLoadExampleData()){await LoadExampleData();};
+})();
 
 const express = require('express');
 var cors = require("cors");
