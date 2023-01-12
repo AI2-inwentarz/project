@@ -83,7 +83,7 @@ export default function DepartmentInfo(){
                             <h2>{item.name}</h2>
                             <h4>{item.description}</h4>
                             <Text weight={100}>Właściciel: {item.affiliation }</Text><br />
-                            <Text><IconHome2 size={20} />{item.address}</Text><br />
+                            <Text><IconHome2 size={20} />{item.adress}</Text><br />
                             <Text><IconClockHour4 size={20} />{item.createdAt}</Text><br />
                             <hr />
                         </div>
