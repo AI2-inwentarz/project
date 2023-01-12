@@ -50,7 +50,7 @@ export function IAppShell(props) {
       }
       footer={
         <Footer height={80} p="md">
-          @2022 Projekt Aplikacje Internetowe 2 <br/>
+          @2023 Projekt Aplikacje Internetowe 2 <br/>
           JF, JJ, SC, SL
         </Footer>
       }

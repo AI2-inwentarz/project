@@ -31,9 +31,7 @@ export default function DepartmentInfo(){
     }
 
     async function fetchRooms() {
-        await fetch(`http://localhost:9000/api/user/getRoomsForDepartment`+ new URLSearchParams({
-            department_id: name,
-        }), {
+        await fetch(`http://localhost:9000/api/user/getRoomsForDepartment/3`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -44,8 +42,6 @@ export default function DepartmentInfo(){
             // })
         }).then(async resp => {
             const resObject2 = await resp.json();
-            console.log("ddd")
-            console.log(resObject2)
             setRooms(resObject2); 
         }) 
     }
@@ -149,9 +145,9 @@ export default function DepartmentInfo(){
           { rooms &&
             Object.values(rooms).map(item =>(
                 <Accordion.Item value={item.name} key={item.name}>
-                <Accordion.Control sx={{textAlign: "center"}}>Sala: {item.longname}, {item.tag}</Accordion.Control>
-                <Accordion.Panel>{item.description}<br />
-                    {/* <Text weight={200}>Wymiary: (szerokość x długość x wysokość) {item.WIDTH} x {item.LENGTH} x {item.HEIGHT} </Text><br /> */}
+                <Accordion.Control sx={{textAlign: "center"}}>Nazwa sali: {item.name}</Accordion.Control>
+                <Accordion.Panel>{item.longname}, {item.tag}<br />
+                    <Text weight={200}>{item.description} </Text><br />
                     <Anchor href={`/room/${item.id}`} target="_blank">
                         Zobacz szczegóły
                     </Anchor>
