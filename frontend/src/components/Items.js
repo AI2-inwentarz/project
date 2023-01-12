@@ -43,7 +43,7 @@ export default function Items(data){
         }) 
       }
       async function addData(name, desc, tag, idk, idp, idd) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/items/`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/items/`, {
             method: "POST",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -77,7 +77,7 @@ export default function Items(data){
     }
 
     async function editData(id) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/items/${id}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/items/${id}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -91,7 +91,7 @@ export default function Items(data){
     }
 
     async function delData(id) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/items/${id}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/items/${id}`, {
             method: "DELETE",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
