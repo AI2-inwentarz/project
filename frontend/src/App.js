@@ -11,10 +11,15 @@ import RoomInfo from './views/RoomInfo';
 import Main from './views/Main';
 import RequestAssigment from './views/RequestAssigment';
 
-const json = localStorage.getItem("token")
-const item = JSON.parse(json)
-const jwt = item.value;
-const timejwt = item.expiry;
+let timejwt;
+
+if(localStorage.getItem("token")){
+  const json = localStorage.getItem("token");
+  const item = JSON.parse(json)
+  const jwt = item.value;
+  timejwt = item.expiry;
+}
+
 const now = new Date().getTime();
 
 
@@ -24,7 +29,7 @@ export function App() {
     <Router>
         <Routes>
           {
-             timejwt < now &&
+            (!localStorage.getItem("token") || (localStorage.getItem("token") && timejwt < now)) &&
             <>
               <Route path={'/'} element={<IAppShell role={0} contain={<Main />} />} />
               <Route path={'login'} element={<IAppShell role={0} contain={<Login />} />}/>
@@ -33,7 +38,7 @@ export function App() {
           }
 
           {
-            timejwt >= now &&
+            localStorage.getItem("token") && timejwt >= now &&
             <>
               <Route path={'/'} element={<IAppShell role={1} contain={<Main />} />} />
 
