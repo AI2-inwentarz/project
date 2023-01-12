@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
-import { Container, Text, Accordion, Anchor, TextInput, NumberInput, Button } from '@mantine/core';
+import { Container, Text, Accordion, Anchor, TextInput, NumberInput, Button, Autocomplete } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconHome2, IconClockHour4, IconPlus } from '@tabler/icons';
 import { IDepartmentData } from '../exampleData/IDepartmentData';
@@ -13,12 +13,11 @@ export default function DepartmentInfo(){
     const [data, setData] = useState();
     const [rooms, setRooms] = useState();
     const [depFromCat, setDepFromCat] = useState();
+    
 
     const json = localStorage.getItem("token")
     const item = JSON.parse(json)
     const jwt = item.value;
-
-    console.log(depFromCat)
 
     async function fetchData() {
         await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentsForUser`, {
@@ -47,8 +46,8 @@ export default function DepartmentInfo(){
         }) 
     }
 
-    async function fetchDepFromCat(category) {
-        await fetch(`http://localhost:9000/api/user/getDepartmentCategories/${category}`, {
+    async function fetchDepCat(category) {
+        await fetch(`http://localhost:9000/api/user/getDepartmentCategories/5`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -60,12 +59,11 @@ export default function DepartmentInfo(){
             setDepFromCat(resObject); 
         }) 
     }
-
-    
     
     useEffect(()=>{
         fetchData();
         fetchRooms();
+        fetchDepCat(name);
     },[])
 
     const form = useForm({
@@ -92,25 +90,6 @@ export default function DepartmentInfo(){
                 })
             }
 
-            
-
-        <h2>Wyszukaj</h2>
-        <form onSubmit={form.onSubmit((values) => fetchDepFromCat(values.type))}>
-            <TextInput
-                placeholder="Nazwa"
-                label="Wpisz nazwe"
-                {...form.getInputProps('number')}
-            />
-                
-            <TextInput
-                placeholder="Kategoria"
-                label="Wpisz kategorie"
-                {...form.getInputProps('type')}
-            />
-            <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }} sx={{marginTop: "10px"}}>
-                Wyślij
-            </Button>
-        </form>
         <h2>Pomieszczenia</h2>
         <Accordion variant="separated" radius="lg" chevronPosition="left" disableChevronRotation transitionDuration={1000} chevron={<IconPlus size={16} />}
         sx={{
@@ -131,7 +110,27 @@ export default function DepartmentInfo(){
                 </Accordion.Item>
             ))
           }
-      </Accordion>
+      </Accordion> <hr />
+      <h2>Wyszukaj</h2>
+        <form>
+          {depFromCat && 
+            <Autocomplete
+            label="Kategorie"
+            placeholder="Wybierz jedną"
+            data={Object.values(depFromCat).map(item =>(item.name))}
+            {...form.getInputProps('type')}
+        />
+          }
+        
+            <TextInput
+                placeholder="Nazwa"
+                label="Wpisz nazwe"
+                {...form.getInputProps('number')}
+            />
+            <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }} sx={{marginTop: "10px"}}>
+                Wyślij
+            </Button>
+        </form>
     </Container>
     )
 

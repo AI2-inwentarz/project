@@ -3,11 +3,10 @@ import Items from "../components/Items";
 import { IItemsData } from '../exampleData/IItemsData';
 import { useParams } from 'react-router-dom';
 
-const json = localStorage.getItem("token")
-const item = JSON.parse(json)
-const jwt = item.value;
-
 export default function RoomInfo(){
+    const json = localStorage.getItem("token");
+    const item = JSON.parse(json);
+    const jwt = item.value;
 
     const { name } = useParams();
     const [data, setData] = useState();
