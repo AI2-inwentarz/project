@@ -119,7 +119,7 @@ export default function DepartmentInfo(){
                 <Accordion.Control sx={{textAlign: "center"}}>Nazwa sali: {item.name}</Accordion.Control>
                 <Accordion.Panel>{item.longname}, {item.tag}<br />
                     <Text weight={200}>{item.description} </Text><br />
-                    <Anchor href={`/room/${item.id}`} target="_blank">
+                    <Anchor href={`/room/${name}/${item.id}/`} target="_blank">
                         Zobacz szczegóły
                     </Anchor>
                 </Accordion.Panel>

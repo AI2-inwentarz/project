@@ -44,7 +44,7 @@ export function App() {
 
               <Route path={'item/:name'} element={<IAppShell role={1} contain={<ItemInfo />} />}/>
 
-              <Route path={'room/:name'} element={<IAppShell role={1} contain={<RoomInfo />} />} />
+              <Route path={'room/:departamentsID/:name'} element={<IAppShell role={1} contain={<RoomInfo />} />} />
 
               <Route path={'departments'} element={<IAppShell role={1} contain={<Departments />} />} />
               <Route path={'department/:name'} element={<IAppShell role={1} contain={<DepartmentInfo />} />} />

@@ -32,7 +32,12 @@ export default function Departments(){
         fetchData();
     },[])
 
-    
+    const form = useForm({
+        initialValues: {
+          number: '',
+          type: '',
+        },
+      });
     return(
     <>
         {data && <IDepartment data={data}/>} 
