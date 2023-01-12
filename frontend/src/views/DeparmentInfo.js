@@ -13,6 +13,7 @@ export default function DepartmentInfo(){
     const [data, setData] = useState();
     const [rooms, setRooms] = useState();
     const [depFromCat, setDepFromCat] = useState();
+    const [depNames, setDepNames] = useState();
     
 
     const json = localStorage.getItem("token")
@@ -47,7 +48,7 @@ export default function DepartmentInfo(){
     }
 
     async function fetchDepCat(category) {
-        await fetch(`http://localhost:9000/api/user/getDepartmentCategories/5`, {
+        await fetch(`http://localhost:9000/api/user/getDepartmentCategories/${category}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -55,8 +56,20 @@ export default function DepartmentInfo(){
             },
         }).then(async res => {
             const resObject = await res.json();
-            console.log(resObject);
             setDepFromCat(resObject); 
+        }) 
+    }
+
+    async function fetchDepNames(name) {
+        await fetch(`http://localhost:9000/api/user/getDepartmentItems/${name}`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json; charset=UTF-8",
+                "authorization": `Bearer ${jwt}`
+            },
+        }).then(async res => {
+            const resObject = await res.json();
+            setDepNames(resObject); 
         }) 
     }
     
@@ -64,6 +77,7 @@ export default function DepartmentInfo(){
         fetchData();
         fetchRooms();
         fetchDepCat(name);
+        fetchDepNames(name);
     },[])
 
     const form = useForm({
@@ -115,18 +129,20 @@ export default function DepartmentInfo(){
         <form>
           {depFromCat && 
             <Autocomplete
-            label="Kategorie"
-            placeholder="Wybierz jedną"
-            data={Object.values(depFromCat).map(item =>(item.name))}
-            {...form.getInputProps('type')}
-        />
-          }
-        
-            <TextInput
-                placeholder="Nazwa"
-                label="Wpisz nazwe"
-                {...form.getInputProps('number')}
+                label="Kategorie"
+                placeholder="Wybierz jedną"
+                data={Object.values(depFromCat).map(item =>(item.name))}
+                {...form.getInputProps('type')}
             />
+          }
+            {depNames && 
+                <Autocomplete
+                    label="Nazwa"
+                    placeholder="Wybierz jedną"
+                    data={Object.values(depNames).map(item =>(item.name))}
+                    {...form.getInputProps('number')}
+                />
+            }
             <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }} sx={{marginTop: "10px"}}>
                 Wyślij
             </Button>
