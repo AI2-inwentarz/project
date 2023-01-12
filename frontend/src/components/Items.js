@@ -1,11 +1,58 @@
-import { HoverCard, Text, Group, Button, MantineProvider } from '@mantine/core';
+import { HoverCard, Text, Group, Button, MantineProvider, TextInput } from '@mantine/core';
 import { showNotification, NotificationsProvider } from '@mantine/notifications';
+import { useForm } from '@mantine/form';
 
 export default function Items(data){
 
     const json = localStorage.getItem("token")
     const item = JSON.parse(json)
     const jwt = item.value;
+
+    const form = useForm({
+        validateInputOnChange: true,
+        initialValues: {
+          name: '',
+          desc: '',
+          tag: '',
+          idk: '',
+          idp: '',
+          idd: '',
+        },
+      });
+
+      async function addData(name, desc, tag, idk, idp, idd) {
+        await fetch(`http://${window.location.hostname}:9000/api/db/items/`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json; charset=UTF-8",
+                "authorization": `Bearer ${jwt}`
+        },
+        body: JSON.stringify({
+            name: name,
+            description: desc,
+            inventory_tag: tag,
+            category_ud: idk,
+            room_id: idp,
+            department_id: idd
+        })
+        }).then(async res => {
+            const jsonObject = await res.json();   
+            console.log(jsonObject); 
+            if(jsonObject.message === "Record Created"){
+                showNotification({
+                    title: 'Udało się',
+                    message: `Item o nazwie ${name} został dodany`,
+                    color: 'green'
+                  })
+
+                  setTimeout(changePage, 3000);
+
+                    function changePage() {
+                        window.location.reload(true);
+                    }
+            } 
+        }) 
+    }
 
     async function editData(id) {
         await fetch(`http://${window.location.hostname}:9000/api/db/items/${id}`, {
@@ -17,6 +64,7 @@ export default function Items(data){
         }).then(async res => {
             const jsonObject = await res.json();   
             console.log(jsonObject); 
+            
         }) 
     }
 
@@ -26,7 +74,7 @@ export default function Items(data){
             headers: {
                 "content-type": "application/json; charset=UTF-8",
                 "authorization": `Bearer ${jwt}`
-        },
+            },
         }).then(async res => {
             const jsonObject = await res.json();    
             console.log(jsonObject);
@@ -74,7 +122,49 @@ export default function Items(data){
             
             </Group>
             <hr />
-            <Button>Dodaj przedmiot</Button>
+            <form onSubmit={form.onSubmit((values) => {addData(values.name, values.desc, values.tag, values.idk, values.idp, values.idd)})} style={{width: "50vw", margin: "0 auto"}}>
+                    <TextInput
+                        placeholder="Wpisz nazwe"
+                        label="Nazwa"
+                        variant="filled"
+                        withAsterisk
+                        {...form.getInputProps('name')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz opis"
+                        label="Opis"
+                        variant="filled"
+                        {...form.getInputProps('desc')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz tag"
+                        label="Tag"
+                        variant="filled"
+                        {...form.getInputProps('tag')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz id kategorii"
+                        label="ID kategorii"
+                        variant="filled"
+                        {...form.getInputProps('idk')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz id pokoju"
+                        label="ID pokoju"
+                        variant="filled"
+                        {...form.getInputProps('idp')}
+                    />
+                    <TextInput
+                        placeholder="Wpisz id departamentu"
+                        label="ID departamentu"
+                        variant="filled"
+                        {...form.getInputProps('idd')}
+                    />
+                    <br />
+                    <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }}>
+                        Dodaj przedmiot
+                    </Button>
+                </form>
         </NotificationsProvider>
         </MantineProvider>
       );
