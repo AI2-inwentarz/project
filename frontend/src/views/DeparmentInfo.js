@@ -31,7 +31,7 @@ export default function DepartmentInfo(){
     }
 
     async function fetchRooms() {
-        await fetch(`http://localhost:9000/api/user/getRoomsForDepartment/3`, {
+        await fetch(`http://localhost:9000/api/user/getRoomsForDepartment/${name}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -67,10 +67,6 @@ export default function DepartmentInfo(){
         initialValues: {
           number: '',
           type: '',
-          person: 0,
-          width: 0,
-          length: 0,
-          height: 0
         },
       });
 
@@ -106,30 +102,6 @@ export default function DepartmentInfo(){
                 placeholder="Wpisz/Wybierz typ"
                 data={ITypeRooms}
                 {...form.getInputProps('type')}
-            />
-            <NumberInput
-                label="po minimalnej pojemności"
-                defaultValue={0}
-                placeholder="Wpisz ilość osób"
-                {...form.getInputProps('person')}
-            />
-            <NumberInput
-                label="po minimalnej szerokości"
-                defaultValue={0}
-                placeholder="Wpisz ilość metrów"
-                {...form.getInputProps('width')}
-            />
-            <NumberInput
-                label="po minimalnej długości"
-                defaultValue={0}
-                placeholder="Wpisz ilość metrów"
-                {...form.getInputProps('length')}
-            />
-            <NumberInput
-                label="po minimalnej wysokości"
-                defaultValue={0}
-                placeholder="Wpisz ilość metrów"
-                {...form.getInputProps('height')}
             />
             <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }} sx={{marginTop: "10px"}}>
                 Wyślij
