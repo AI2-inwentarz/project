@@ -91,17 +91,19 @@ export default function DepartmentInfo(){
         <Container size="xs" px="xs" sx={{textAlign: "center"}}>
             { data &&
                 Object.values(data).map(item =>{
-                    return (
-                        <div key={item.name}>
-                            <h2>{item.name}</h2>
-                            <h4>{item.description}</h4>
-                            <Text weight={100}>Właściciel: {item.affiliation }</Text><br />
-                            <Text><IconHome2 size={20} />{item.adress}</Text><br />
-                            <Text><IconClockHour4 size={20} />{item.createdAt}</Text><br />
-                            <hr />
-                        </div>
-                    )
-                })
+                    if(item.id === parseInt(name)){
+                        return(
+                            <div key={item.name}>
+                                <h2>{item.name}</h2>
+                                <h4>{item.description}</h4>
+                                <Text weight={100}>Właściciel: {item.affiliation }</Text><br />
+                                <Text><IconHome2 size={20} />{item.adress}</Text><br />
+                                <Text><IconClockHour4 size={20} />{item.createdAt}</Text><br />
+                                <hr />
+                            </div>
+                        )
+                    }                       
+            })
             }
 
         <h2>Pomieszczenia</h2>
