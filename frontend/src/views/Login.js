@@ -49,7 +49,13 @@ export default function Login(){
                     } 
                 }
                 else{
-                    localStorage.setItem("token", tokenObject.token);
+                    const now = new Date();
+                    const item = {
+                        value: tokenObject.token,
+                        expiry: now.getTime() + 3600,
+                    }
+                    
+                    localStorage.setItem("token", JSON.stringify(item));
                     navigate("/");
                     window.location.reload(true);
                 } 

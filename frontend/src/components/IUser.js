@@ -8,13 +8,16 @@ export function IUser() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const [userData, setUserData] = useState();
-  console.log(userData);
+
+  const json = localStorage.getItem("token")
+    const item = JSON.parse(json)
+    const jwt = item.value;
 
   async function getDataLog(){
     await fetch("http://localhost:9000/api/user/getUserInfo", {
     "method": "GET",
     "headers": {
-      "authorization": `Bearer ${localStorage.getItem("token")}`,
+      "authorization": `Bearer ${jwt}`,
       "content-type": "application/json; charset=UTF-8"
     }
   }).then(async res => {

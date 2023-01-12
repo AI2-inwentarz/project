@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
-import { Container, Text, Accordion, Anchor, Autocomplete, NumberInput, Button } from '@mantine/core';
+import { Container, Text, Accordion, Anchor, TextInput, NumberInput, Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconHome2, IconClockHour4, IconPlus } from '@tabler/icons';
 import { IDepartmentData } from '../exampleData/IDepartmentData';
@@ -12,16 +12,20 @@ export default function DepartmentInfo(){
 
     const [data, setData] = useState();
     const [rooms, setRooms] = useState();
+    const [depFromCat, setDepFromCat] = useState();
 
-    console.log(data)
-    console.log(rooms)
+    const json = localStorage.getItem("token")
+    const item = JSON.parse(json)
+    const jwt = item.value;
+
+    console.log(depFromCat)
 
     async function fetchData() {
         await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentsForUser`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
-                "authorization": `Bearer ${localStorage.getItem("token")}`
+                "authorization": `Bearer ${jwt}`
             },
         })
             .then(async res => {
@@ -35,33 +39,34 @@ export default function DepartmentInfo(){
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
-                "authorization": `Bearer ${localStorage.getItem("token")}`
+                "authorization": `Bearer ${jwt}`
             },
-            // body: JSON.stringify({
-            //     department_id: 3,
-            // })
-        }).then(async resp => {
-            const resObject2 = await resp.json();
-            setRooms(resObject2); 
+        }).then(async res => {
+            const resObject = await res.json();
+            setRooms(resObject); 
         }) 
     }
+
+    async function fetchDepFromCat(category) {
+        await fetch(`http://localhost:9000/api/user/getDepartmentCategories/${category}`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json; charset=UTF-8",
+                "authorization": `Bearer ${jwt}`
+            },
+        }).then(async res => {
+            const resObject = await res.json();
+            console.log(resObject);
+            setDepFromCat(resObject); 
+        }) 
+    }
+
+    
     
     useEffect(()=>{
         fetchData();
         fetchRooms();
     },[])
-
-    let INumberRooms = [];
-    Object.values(IRoomsData).map(data => {
-        INumberRooms.push(data.NUMBER)
-        return null;
-    })
-
-    let ITypeRooms = [];
-    Object.values(IRoomsData).map(data => {
-        if(!ITypeRooms.includes(data.TYPE)) ITypeRooms.push(data.TYPE)
-        return null;
-    })
 
     const form = useForm({
         initialValues: {
@@ -90,17 +95,16 @@ export default function DepartmentInfo(){
             
 
         <h2>Wyszukaj</h2>
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
-            <Autocomplete
-                label={"po numerze pomieszczenia"}
-                placeholder="Wpisz/Wybierz numer"
-                data={INumberRooms}
+        <form onSubmit={form.onSubmit((values) => fetchDepFromCat(values.type))}>
+            <TextInput
+                placeholder="Nazwa"
+                label="Wpisz nazwe"
                 {...form.getInputProps('number')}
             />
-            <Autocomplete
-                label={"po typie pomieszczenia"}
-                placeholder="Wpisz/Wybierz typ"
-                data={ITypeRooms}
+                
+            <TextInput
+                placeholder="Kategoria"
+                label="Wpisz kategorie"
                 {...form.getInputProps('type')}
             />
             <Button type="submit" fullWidth variant="gradient" gradient={{ from: 'dark', to: 'black', deg: 200 }} sx={{marginTop: "10px"}}>
