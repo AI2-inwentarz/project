@@ -23,6 +23,7 @@ const getDepartmentById = async (req, res) => {
         res.send(department ? department : {"message":"No record found"});
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -36,6 +37,7 @@ const createDepartment = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -52,6 +54,7 @@ const updateDepartment = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -68,6 +71,7 @@ const deleteDepartment = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
 

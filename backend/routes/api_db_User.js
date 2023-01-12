@@ -23,6 +23,7 @@ const getUserById = async (req, res) => {
         res.send(user ? user : {"message":"No record found"});
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -36,6 +37,7 @@ const createUser = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -52,6 +54,7 @@ const updateUser = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -68,6 +71,7 @@ const deleteUser = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
 

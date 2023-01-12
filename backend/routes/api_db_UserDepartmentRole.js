@@ -23,6 +23,7 @@ const getUserDepartmentRoleById = async (req, res) => {
         res.send(userDepartmentRole ? userDepartmentRole : {"message":"No record found"});
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -36,6 +37,7 @@ const createUserDepartmentRole = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -52,6 +54,7 @@ const updateUserDepartmentRole = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -68,6 +71,7 @@ const deleteUserDepartmentRole = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
 

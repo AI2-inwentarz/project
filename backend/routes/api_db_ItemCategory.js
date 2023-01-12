@@ -23,6 +23,7 @@ const getItemCategoryById = async (req, res) => {
         res.send(itemCategory ? itemCategory : {"message":"No record found"});
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -36,6 +37,7 @@ const createItemCategory = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -52,6 +54,7 @@ const updateItemCategory = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -68,6 +71,7 @@ const deleteItemCategory = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
 

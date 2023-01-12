@@ -35,6 +35,7 @@ const getUserItemById = async (req, res) => {
         res.send(item ? item : {"message":"No record found"});
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
@@ -62,11 +63,30 @@ const createUserItem = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
 // Update Item by id
 const updateUserItem = async (req, res) => {
+
+    if(!req.auth.user.id){res.sendStatus(401);return false;}
+    if(!req.params.id){res.sendStatus(401);return false;}
+    if(req.body.id && (req.body.id != req.params.id)){res.sendStatus(401);return false;}
+    // var itemcheck = await ItemCategory.findByPk(req.body.req.params.id);
+    // if(!itemcheck||itemcheck.id !=req.body.department_id){res.sendStatus(403);return false;}
+    console.log(req.body);
+    if(!req.body.department_id){res.send({"message":"department_id is needed in params"});return false;}
+    var itemcategorycheck = await ItemCategory.findByPk(req.body.category_id);
+    if(!itemcategorycheck||itemcategorycheck.department_id !=req.body.department_id){res.sendStatus(403);return false;}
+    var roomcheck = await Room.findByPk(req.body.room_id);
+    if(!roomcheck||roomcheck.department_id !=req.body.department_id){res.sendStatus(403);return false;}
+    console.log(req.body);
+    var departmentId = req.body.department_id;
+    if(!departmentId){res.send({"message":"departmentId of record not found"});return false;}
+    console.log(departmentId);
+    if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+
     try {
         await Item.update(req.body, {
             where: {
@@ -78,11 +98,21 @@ const updateUserItem = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
  
 // Delete Item by id
 const deleteUserItem = async (req, res) => {
+
+    if(!req.auth.user.id){res.sendStatus(401);return false;}
+    if(!req.params.id){res.send({"message":"Id is needed in params"});return false;}
+    var itemcheck = await Item.findByPk(req.params.id);
+    var departmentId = itemcheck.department_id;
+    if(!departmentId){res.send({"message":"departmentId of record not found"});return false;}
+    console.log(departmentId);
+    if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+
     try {
         await Item.destroy({
             where: {
@@ -94,6 +124,7 @@ const deleteUserItem = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.sendStatus(400);
     }
 }
 
