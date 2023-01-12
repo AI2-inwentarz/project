@@ -94,7 +94,8 @@ const {
   getDepartmentCategories,
   getDepartmentItems,
   getContacts,
-  getDepartmentUsers
+  getDepartmentUsers,
+  deleteDepartmentUser
 } = require("./routes/api_user.js");
 router.get('/user/getDepartmentsForUser', getDepartmentsForUser);
 router.get('/user/getRoomsForDepartment/:id', getRoomsForDepartment);
@@ -103,6 +104,7 @@ router.get('/user/getDepartmentCategories/:id', getDepartmentCategories);
 router.get('/user/getDepartmentItems/:id', getDepartmentItems);
 router.get('/user/getDepartmentUsers/:id', getDepartmentUsers);
 router.get('/user/getContacts', getContacts);
+router.delete('/user/deleteDepartmentUser/:id', deleteDepartmentUser);
 
 // router.get('/user/items/:id', mustHaveAccess,getItemById);
 // router.post('/user/items', mustHaveAccess,createItem);

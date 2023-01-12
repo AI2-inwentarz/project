@@ -224,6 +224,42 @@ const getDepartmentUsers = async (req, res) => {
     }
 }
 
+const deleteDepartmentUser = async (req, res) => {
+    try {
+        if(!req.auth.user.id){res.sendStatus(401);return false;}
+        if(!req.params.id){res.send({"message":"Id is needed in params"});return false;}
+        if(!req.body.user_id){res.send({"message":"user_id is needed in body"});return false;}
+        // console.log(req.params.id);
+        var userId = req.auth.user.id;
+        var departmentId = req.params.id;
+        console.log(req.body);
+        console.log(req.params);
+        // console.log(req);
+        // console.log(await userHasAccessToDepartment(req.auth,departmentId));
+        if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+        // console.log(await userHasAccessToDepartment(req.auth,departmentId));
+        var department = await Department.findByPk(departmentId);
+        if(department.owner_id!=userId){res.sendStatus(403);return false;}
+        console.log(req.body.user_id);
+        const result = await UserDepartmentRole.destroy({
+            where: {
+                user_id: req.body.user_id
+            }
+        });
+        console.log(result);
+        // var udr = await department.getUserDepartmentRoles({include:{model:User,attributes:["id","firstname","surname","email","role","job_title"]}});
+        // console.log(udr);
+        // if(!udr){res.json(udr ? udr : {"message":"No records found"});return false;}
+        // var items = await department.getItems();
+
+        
+        res.send(result ? {"message":"One result deleted"} : {"message":"No record found"});
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+}
+
 module.exports = {
     getDepartmentsForUser,
     getRoomsForDepartment,
@@ -231,5 +267,6 @@ module.exports = {
     getDepartmentCategories,
     getDepartmentItems,
     getContacts,
-    getDepartmentUsers
+    getDepartmentUsers,
+    deleteDepartmentUser
 };
