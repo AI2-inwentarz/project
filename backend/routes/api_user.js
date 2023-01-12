@@ -211,7 +211,7 @@ const getDepartmentUsers = async (req, res) => {
         if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
         // console.log(await userHasAccessToDepartment(req.auth,departmentId));
         var department = await Department.findByPk(departmentId);
-        var udr = await department.getUserDepartmentRoles({include:User});
+        var udr = await department.getUserDepartmentRoles({include:{model:User,attributes:["id","firstname","surname","email","role","job_title"]}});
         console.log(udr);
         if(!udr){res.json(udr ? udr : {"message":"No records found"});return false;}
         // var items = await department.getItems();
