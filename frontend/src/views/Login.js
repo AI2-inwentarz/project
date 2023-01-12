@@ -52,7 +52,7 @@ export default function Login(){
                     const now = new Date();
                     const item = {
                         value: tokenObject.token,
-                        expiry: now.getTime() + 3600,
+                        expiry: now.getTime() + 3600 * 1000,
                     }
                     
                     localStorage.setItem("token", JSON.stringify(item));

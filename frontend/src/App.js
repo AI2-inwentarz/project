@@ -20,12 +20,11 @@ const now = new Date().getTime();
 
 export function App() {
 
-  
   return (
     <Router>
         <Routes>
           {
-            (!localStorage.getItem("token") || timejwt < now) &&
+             timejwt < now &&
             <>
               <Route path={'/'} element={<IAppShell role={0} contain={<Main />} />} />
               <Route path={'login'} element={<IAppShell role={0} contain={<Login />} />}/>
@@ -34,7 +33,7 @@ export function App() {
           }
 
           {
-            localStorage.getItem("token") && timejwt >= now &&
+            timejwt >= now &&
             <>
               <Route path={'/'} element={<IAppShell role={1} contain={<Main />} />} />
 
