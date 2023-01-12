@@ -41,12 +41,13 @@ const {authUser,registerUser} = require("./routes/api_auth.js");
 router.post('/auth/authUser', authUser);
 router.post('/auth/registerUser', registerUser);
 
-const {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems,getContacts} = require("./routes/api_user.js");
+const {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems,getContacts,getDepartmentUsers} = require("./routes/api_user.js");
 router.get('/user/getDepartmentsForUser', getDepartmentsForUser);
 router.get('/user/getRoomsForDepartment/:id', getRoomsForDepartment);
 router.get('/user/getUserInfo', getUserInfo);
 router.get('/user/getDepartmentCategories/:id', getDepartmentCategories);
 router.get('/user/getDepartmentItems/:id', getDepartmentItems);
+router.get('/user/getDepartmentUsers/:id', getDepartmentUsers);
 router.get('/user/getContacts', getContacts);
 
 const {getUsers,getUserById,createUser,updateUser,deleteUser} = require("./routes/api_db_User.js");
