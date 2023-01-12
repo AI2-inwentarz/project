@@ -21,8 +21,8 @@ export default function Registration() {
             body: JSON.stringify({
                 email: email,
                 login: login,
-                name: name,
-                surname: surname,
+                name: name !== '' ? name : 'nieznane',
+                surname: surname !== '' ? surname : 'nieznane',
                 phone: phone,
                 password: password,
             })
