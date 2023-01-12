@@ -95,6 +95,8 @@ export default function DepartmentInfo(){
                 })
             }
 
+            
+
         <h2>Wyszukaj</h2>
         <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <Autocomplete
