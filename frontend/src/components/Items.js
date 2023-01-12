@@ -1,8 +1,13 @@
-import { HoverCard, Text, Group, Button, MantineProvider, TextInput } from '@mantine/core';
+import { HoverCard, Text, Group, Button, MantineProvider, TextInput, Autocomplete } from '@mantine/core';
 import { showNotification, NotificationsProvider } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
+import { useParams } from 'react-router-dom';
+import {useEffect, useState} from "react";
 
 export default function Items(data){
+
+    const { departamentsID, name } = useParams();
+    const [categories, setCategories] = useState();
 
     const json = localStorage.getItem("token")
     const item = JSON.parse(json)
@@ -15,13 +20,30 @@ export default function Items(data){
           desc: '',
           tag: '',
           idk: '',
-          idp: '',
-          idd: '',
+          idp: name,
+          idd: departamentsID,
         },
       });
 
+
+      useEffect(()=>{
+        getCategories();
+      },[])
+      
+      async function getCategories(){
+        await fetch(`http://${window.location.hostname}:9000/api/db/itemCategories/`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json; charset=UTF-8",
+                "authorization": `Bearer ${jwt}`
+            },
+        }).then(async res => {
+            const jsonObject = await res.json();   
+            setCategories(jsonObject);
+        }) 
+      }
       async function addData(name, desc, tag, idk, idp, idd) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/items/`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/items/`, {
             method: "POST",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -55,7 +77,12 @@ export default function Items(data){
     }
 
     async function editData(id) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/items/${id}`, {
+        form.setValues({
+            name: "a" ,
+            desc: "b" ,
+            tag: "c",
+          })
+        await fetch(`http://${window.location.hostname}:9000/api/user/items/${id}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -69,7 +96,7 @@ export default function Items(data){
     }
 
     async function delData(id) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/items/${id}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/items/${id}`, {
             method: "DELETE",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -142,22 +169,26 @@ export default function Items(data){
                         variant="filled"
                         {...form.getInputProps('tag')}
                     />
-                    <TextInput
-                        placeholder="Wpisz id kategorii"
-                        label="ID kategorii"
-                        variant="filled"
-                        {...form.getInputProps('idk')}
-                    />
+                    {categories && 
+                        <Autocomplete
+                            label="Nazwa"
+                            placeholder="Wybierz jedną"
+                            data={Object.values(categories).map(item => (item.id).toString())}
+                            {...form.getInputProps('number')}
+                        />
+                    }
                     <TextInput
                         placeholder="Wpisz id pokoju"
                         label="ID pokoju"
                         variant="filled"
+                        disabled
                         {...form.getInputProps('idp')}
                     />
                     <TextInput
                         placeholder="Wpisz id departamentu"
                         label="ID departamentu"
                         variant="filled"
+                        disabled
                         {...form.getInputProps('idd')}
                     />
                     <br />
