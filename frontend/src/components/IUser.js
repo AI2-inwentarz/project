@@ -14,7 +14,7 @@ export function IUser() {
     const jwt = item.value;
 
   async function getDataLog(){
-    await fetch("http://localhost:9000/api/user/getUserInfo", {
+    await fetch(`http://${window.location.hostname}/api/user/getUserInfo`, {
     "method": "GET",
     "headers": {
       "authorization": `Bearer ${jwt}`,
