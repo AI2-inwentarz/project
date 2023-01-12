@@ -11,6 +11,10 @@ export default function DepartmentInfo(){
     const { name } = useParams();
 
     const [data, setData] = useState();
+    const [rooms, setRooms] = useState();
+
+    console.log(data)
+    console.log(rooms)
 
     async function fetchData() {
         await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentsForUser`, {
@@ -19,27 +23,31 @@ export default function DepartmentInfo(){
                 "content-type": "application/json; charset=UTF-8",
                 "authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            })
+        })
             .then(async res => {
                 const resObject = await res.json();
-                console.log(resObject)
                 setData(resObject); 
             }) 
     }
 
     async function fetchRooms() {
-        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentsForUser`, {
+        await fetch(`http://localhost:9000/api/user/getRoomsForDepartment`+ new URLSearchParams({
+            department_id: name,
+        }), {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
                 "authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            })
-            .then(async res => {
-                const resObject = await res.json();
-                console.log(resObject)
-                setData(resObject); 
-            }) 
+            // body: JSON.stringify({
+            //     department_id: 3,
+            // })
+        }).then(async resp => {
+            const resObject2 = await resp.json();
+            console.log("ddd")
+            console.log(resObject2)
+            setRooms(resObject2); 
+        }) 
     }
     
     useEffect(()=>{
@@ -81,6 +89,7 @@ export default function DepartmentInfo(){
                             <Text weight={100}>Właściciel: {item.affiliation }</Text><br />
                             <Text><IconHome2 size={20} />{item.address}</Text><br />
                             <Text><IconClockHour4 size={20} />{item.createdAt}</Text><br />
+                            <hr />
                         </div>
                     )
                 })
@@ -135,13 +144,13 @@ export default function DepartmentInfo(){
               transform: 'rotate(45deg)',
             },
         }}>
-          {
-            Object.values(IRoomsData).map(item =>(
-                <Accordion.Item value={item.NUMBER} key={item.NUMBER}>
-                <Accordion.Control sx={{textAlign: "center"}}>Sala nr. {item.NUMBER}, {item.MAX_PERSON} osobowa, {item.TYPE}</Accordion.Control>
-                <Accordion.Panel>{item.DESCRIPTION}<br />
-                    <Text weight={200}>Wymiary: (szerokość x długość x wysokość) {item.WIDTH} x {item.LENGTH} x {item.HEIGHT} </Text><br />
-                    <Anchor href={`/room/${item.NUMBER}`} target="_blank">
+          { rooms &&
+            Object.values(rooms).map(item =>(
+                <Accordion.Item value={item.name} key={item.name}>
+                <Accordion.Control sx={{textAlign: "center"}}>Sala: {item.longname}, {item.tag}</Accordion.Control>
+                <Accordion.Panel>{item.description}<br />
+                    {/* <Text weight={200}>Wymiary: (szerokość x długość x wysokość) {item.WIDTH} x {item.LENGTH} x {item.HEIGHT} </Text><br /> */}
+                    <Anchor href={`/room/${item.id}`} target="_blank">
                         Zobacz szczegóły
                     </Anchor>
                 </Accordion.Panel>
