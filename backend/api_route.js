@@ -2,7 +2,7 @@ var express = require("express");
 const config = require("./config.js");
 var router = express.Router();
 
-const {mustBeAdmin} = require("./middleware.js");
+const {mustBeAdmin,mustHaveAccess} = require("./middleware.js");
 
 var { expressjwt: jwt } = require("express-jwt");
 
@@ -37,18 +37,7 @@ router.use(function (err, req, res, next) {
 });
 
 
-const {authUser,registerUser} = require("./routes/api_auth.js");
-router.post('/auth/authUser', authUser);
-router.post('/auth/registerUser', registerUser);
 
-const {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems,getContacts,getDepartmentUsers} = require("./routes/api_user.js");
-router.get('/user/getDepartmentsForUser', getDepartmentsForUser);
-router.get('/user/getRoomsForDepartment/:id', getRoomsForDepartment);
-router.get('/user/getUserInfo', getUserInfo);
-router.get('/user/getDepartmentCategories/:id', getDepartmentCategories);
-router.get('/user/getDepartmentItems/:id', getDepartmentItems);
-router.get('/user/getDepartmentUsers/:id', getDepartmentUsers);
-router.get('/user/getContacts', getContacts);
 
 const {getUsers,getUserById,createUser,updateUser,deleteUser} = require("./routes/api_db_User.js");
 router.get('/db/users', mustBeAdmin, getUsers);
@@ -91,6 +80,63 @@ router.get('/db/items/:id', mustBeAdmin,getItemById);
 router.post('/db/items', mustBeAdmin,createItem);
 router.put('/db/items/:id', mustBeAdmin,updateItem);
 router.delete('/db/items/:id', mustBeAdmin,deleteItem);
+
+
+
+const {authUser,registerUser} = require("./routes/api_auth.js");
+router.post('/auth/authUser', authUser);
+router.post('/auth/registerUser', registerUser);
+
+const {
+  getDepartmentsForUser,
+  getRoomsForDepartment,
+  getUserInfo,
+  getDepartmentCategories,
+  getDepartmentItems,
+  getContacts,
+  getDepartmentUsers
+} = require("./routes/api_user.js");
+router.get('/user/getDepartmentsForUser', getDepartmentsForUser);
+router.get('/user/getRoomsForDepartment/:id', getRoomsForDepartment);
+router.get('/user/getUserInfo', getUserInfo);
+router.get('/user/getDepartmentCategories/:id', getDepartmentCategories);
+router.get('/user/getDepartmentItems/:id', getDepartmentItems);
+router.get('/user/getDepartmentUsers/:id', getDepartmentUsers);
+router.get('/user/getContacts', getContacts);
+
+// router.get('/user/items/:id', mustHaveAccess,getItemById);
+// router.post('/user/items', mustHaveAccess,createItem);
+// router.put('/user/items/:id', mustHaveAccess,updateItem);
+// router.delete('/user/items/:id', mustHaveAccess,deleteItem);
+
+
+
+
+
+const {getUserItemCategories,getUserItemCategoryById,createUserItemCategory,updateUserItemCategory,deleteUserItemCategory} = require("./routes/api_user_ItemCategory.js");
+router.get('/user/itemCategories',  getUserItemCategories);
+router.get('/user/itemCategories/:id', getUserItemCategoryById);
+router.post('/user/itemCategories', createUserItemCategory);
+router.put('/user/itemCategories/:id', updateUserItemCategory);
+router.delete('/user/itemCategories/:id', deleteUserItemCategory);
+
+const {getUserRooms,getUserRoomById,createUserRoom,updateUserRoom,deleteUserRoom} = require("./routes/api_user_Room.js");
+router.get('/user/rooms',  getUserRooms);
+router.get('/user/rooms/:id', getUserRoomById);
+router.post('/user/rooms', createUserRoom);
+router.put('/user/rooms/:id', updateUserRoom);
+router.delete('/user/rooms/:id', deleteUserRoom);
+
+const {getUserItems,getUserItemById,createUserItem,updateUserItem,deleteUserItem} = require("./routes/api_user_Item.js");
+router.get('/user/items',  getUserItems);
+router.get('/user/items/:id', getUserItemById);
+router.post('/user/items', createUserItem);
+router.put('/user/items/:id', updateUserItem);
+router.delete('/user/items/:id', deleteUserItem);
+
+
+
+
 
 router.get("/*", function(req, res, next) {
     res.send("API is working properly a, there is no such method on this url in api.");

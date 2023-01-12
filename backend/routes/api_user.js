@@ -224,4 +224,12 @@ const getDepartmentUsers = async (req, res) => {
     }
 }
 
-module.exports = {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems,getContacts,getDepartmentUsers};
+module.exports = {
+    getDepartmentsForUser,
+    getRoomsForDepartment,
+    getUserInfo,
+    getDepartmentCategories,
+    getDepartmentItems,
+    getContacts,
+    getDepartmentUsers
+};
