@@ -1,4 +1,4 @@
-const {User} = require("../db_models.js");
+const {User, UserDepartmentRole} = require("../db_models.js");
 const {Department} = require("../db_models.js");
 
 const { Op } = require("sequelize");
@@ -36,10 +36,10 @@ const getDepartmentsForUser = async (req, res) => {
         }
         
         
-        idArray.push(req.auth.user.id);
+        // idArray.push(req.auth.user.id);
         const department = await Department.findAll({
             where: {
-                owner_id:{[Op.or]:idArray}
+                [Op.or]:{owner_id:req.auth.user.id,id:idArray}
             }
         });
         
@@ -147,4 +147,54 @@ const getDepartmentItems = async (req, res) => {
     }
 }
 
-module.exports = {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems};
+// Get Department by id
+const getContacts = async (req, res) => {
+    try {
+        if(!req.auth.user.id){return;}
+        var userId = req.auth.user.id;
+        var user = await User.findByPk(userId);
+        // console.log(await user.getDepartments());
+        // console.log(await user.getUserDepartmentRoles());
+        var udrList = await user.getUserDepartmentRoles();
+        // console.log(udrList[0]);
+        // udrList.for
+        var idArray = [];
+        for await (const udr of udrList){
+                idArray.push(udr.department_id);
+        }
+        
+        
+        // idArray.push(req.auth.user.id);
+        const departments = await Department.findAll({
+            where: {
+                [Op.or]:{id:idArray}
+            }
+        });
+        var userIdArray = [];
+        for await (const department of departments){
+            userIdArray.push(department.owner_id);
+        }
+        const users = await User.findAll({
+            // include: [Department,UserDepartmentRole],
+            attributes:["firstname","surname","email","role","job_title"],
+            where: {
+                [Op.or]:{role:{[Op.gt]: 0},id:userIdArray}
+            }
+        });
+        // // var userIdArray = [];
+        // for await (var user of users){
+        //     // userIdArray.push(department.owner_id);
+        //     var departmentwithaname = await Department.findOne({where:{owner_id:user.id}});
+        //     console.log(departmentwithaname)
+        //     user.department_name = departmentwithaname;
+        // }
+
+        var depardments = await Department.findAll({attributes:["name","owner_id"]});
+        res.send({users,depardments} ? {users,depardments} : {"message":"No record found"});
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+}
+
+module.exports = {getDepartmentsForUser,getRoomsForDepartment,getUserInfo,getDepartmentCategories,getDepartmentItems,getContacts};
