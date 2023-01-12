@@ -153,16 +153,23 @@ const getContacts = async (req, res) => {
         if(!req.auth.user.id){return;}
         var userId = req.auth.user.id;
         var user = await User.findByPk(userId);
+        // console.log(user);
         // console.log(await user.getDepartments());
         // console.log(await user.getUserDepartmentRoles());
-        var udrList = await user.getUserDepartmentRoles();
+        const udrList = await UserDepartmentRole.findAll({
+            where: {
+                user_id:userId
+            }
+        });
+        // var udrList = await user.getUserDepartmentRoles();
+        // console.log(udrList);
         // console.log(udrList[0]);
         // udrList.for
         var idArray = [];
         for await (const udr of udrList){
                 idArray.push(udr.department_id);
         }
-        
+        // console.log(idArray);
         
         // idArray.push(req.auth.user.id);
         const departments = await Department.findAll({
@@ -170,10 +177,12 @@ const getContacts = async (req, res) => {
                 [Op.or]:{id:idArray}
             }
         });
+        // console.log(departments);
         var userIdArray = [];
         for await (const department of departments){
             userIdArray.push(department.owner_id);
         }
+        console.log(userIdArray);
         const users = await User.findAll({
             // include: [Department,UserDepartmentRole],
             attributes:["id","firstname","surname","email","role","job_title"],
