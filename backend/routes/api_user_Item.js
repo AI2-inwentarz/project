@@ -1,5 +1,5 @@
 // Import Item Model
-const {Item} = require("../db_models.js");
+const {Item, ItemCategory, Room} = require("../db_models.js");
 const {userHasAccessToDepartment} = require("../util.js");
 // Get all Items
 const getUserItems = async (req, res) => {
@@ -44,8 +44,11 @@ const createUserItem = async (req, res) => {
     if(!req.auth.user.id){res.sendStatus(401);return false;}
     // console.log(req.body);
     if(!req.body.department_id){res.send({"message":"department_id is needed in params"});return false;}
-    // var itemcheck = await Item.findByPk(req.body.id);
-    // console.log(req.body);
+    var itemcategorycheck = await ItemCategory.findByPk(req.body.category_id);
+    if(!itemcategorycheck||itemcategorycheck.department_id !=req.body.department_id){res.sendStatus(403);return false;}
+    var roomcheck = await Room.findByPk(req.body.room_id);
+    if(!roomcheck||roomcheck.department_id !=req.body.department_id){res.sendStatus(403);return false;}
+    console.log(req.body);
     var departmentId = req.body.department_id;
     if(!departmentId){res.send({"message":"departmentId of record not found"});return false;}
     console.log(departmentId);
