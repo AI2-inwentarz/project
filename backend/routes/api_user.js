@@ -52,11 +52,14 @@ const getDepartmentsForUser = async (req, res) => {
 // Get Department by id
 const getRoomsForDepartment = async (req, res) => {
     try {
-        if(!req.auth.user.id){return;}
+        if(!req.auth.user.id){res.sendStatus(401);return false;}
+        if(!req.params.id){res.send({"message":"Id is needed in params"});return false;}
+        // console.log(req.params.id);
         var userId = req.auth.user.id;
-        var departmentId = req.body.department_id;
-        console.log(req.body);
+        var departmentId = req.params.id;
+        // console.log(req.body);
         // console.log(req.params);
+        // console.log(req);
         console.log(await userHasAccessToDepartment(req.auth,departmentId));
         if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
         // console.log(await userHasAccessToDepartment(req.auth,departmentId));
