@@ -11,6 +11,7 @@ import RoomInfo from './views/RoomInfo';
 import Main from './views/Main';
 import RequestAssigment from './views/RequestAssigment';
 import RoomInfoEdit from './views/RoomInfoEdit';
+import Myaccount from './views/MyAccount';
 
 let timejwt;
 
@@ -51,7 +52,7 @@ export function App() {
               <Route path={'departments'} element={<IAppShell role={1} contain={<Departments />} />} />
               <Route path={'department/:name'} element={<IAppShell role={1} contain={<DepartmentInfo />} />} />
 
-              <Route path={'myaccount'} element={<IAppShell role={1} contain={<div>my account</div>} />} />
+              <Route path={'myaccount'} element={<IAppShell role={1} contain={<Myaccount />} />} />
               <Route path={'assigment/request'} element={<IAppShell role={1} contain={<RequestAssigment />} />} />
               <Route path={'assigment/accept'} element={<IAppShell role={1} contain={<div>assigment accept</div>} />} />
             </>
