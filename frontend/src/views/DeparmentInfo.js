@@ -1,10 +1,8 @@
 import {useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
-import { Container, Text, Accordion, Anchor, TextInput, NumberInput, Button, Autocomplete } from '@mantine/core';
+import { Container, Text, Accordion, Anchor, Button, Autocomplete } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconHome2, IconClockHour4, IconPlus } from '@tabler/icons';
-import { IDepartmentData } from '../exampleData/IDepartmentData';
-import { IRoomsData } from '../exampleData/IRoomsData';
 
 
 export default function DepartmentInfo(){

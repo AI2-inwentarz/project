@@ -23,6 +23,9 @@ export default function IDepartment(data) {
                 <Anchor href={`/department/${item.id}`} target="_blank">
                     Zobacz szczegóły
                 </Anchor>
+                <Anchor href={`/department/${item.id}/add`} target="_blank" sx={{paddingLeft: "20px"}}>
+                    Dodaj do wydziału
+                </Anchor>
               </Accordion.Panel> 
             </Accordion.Item>
           ))}
