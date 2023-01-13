@@ -35,7 +35,7 @@ export default function DepartmentInfo(){
     }
 
     async function fetchRooms() {
-        await fetch(`http://${window.location.hostname}/api/user/getRoomsForDepartment/${name}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getRoomsForDepartment/${name}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -48,7 +48,7 @@ export default function DepartmentInfo(){
     }
 
     async function fetchDepCat(category) {
-        await fetch(`http://${window.location.hostname}/api/user/getDepartmentCategories/${category}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentCategories/${category}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -61,7 +61,7 @@ export default function DepartmentInfo(){
     }
 
     async function fetchDepNames(name) {
-        await fetch(`http://${window.location.hostname}/api/user/getDepartmentItems/${name}`, {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getDepartmentItems/${name}`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
