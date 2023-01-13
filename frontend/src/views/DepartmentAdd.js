@@ -53,15 +53,15 @@ export default function DepartmentAdd(){
     }
 
     async function delData(id) {
-        fetch(`http://localhost:9000/api/user/deleteDepartmentUser/${department_id}`, {
+        fetch(`http://${window.location.hostname}:9000/api/user/deleteDepartmentUser/${department_id}`, {
             method: "DELETE",
             headers: {
                 "authorization": `Bearer ${jwt}`,
                 "content-type": "application/json; charset=UTF-8"
             },
-            body: {
-                "user_id": id
-            }
+            body: JSON.stringify({
+                user_id: id
+            })
         }).then(async res => {
             const jsonObject = await res.json();    
             console.log(jsonObject);
