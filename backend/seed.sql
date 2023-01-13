@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas generowania: 12 Sty 2023, 16:33
+-- Czas generowania: 13 Sty 2023, 18:38
 -- Wersja serwera: 5.5.62-0+deb8u1
 -- Wersja PHP: 5.6.40-0+deb8u12
 
@@ -29,13 +29,13 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `Department`;
 CREATE TABLE IF NOT EXISTS `Department` (
 `id` int(11) NOT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `shortname` varchar(100) DEFAULT NULL,
+  `name` varchar(200) NOT NULL,
+  `shortname` varchar(100) NOT NULL,
   `description` text,
   `shortdescription` varchar(500) DEFAULT NULL,
   `adress` varchar(120) DEFAULT NULL,
   `affiliation` varchar(200) DEFAULT NULL,
-  `owner_id` int(11) DEFAULT NULL,
+  `owner_id` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -60,12 +60,12 @@ INSERT INTO `Department` (`id`, `name`, `shortname`, `description`, `shortdescri
 DROP TABLE IF EXISTS `Item`;
 CREATE TABLE IF NOT EXISTS `Item` (
 `id` int(11) NOT NULL,
-  `name` varchar(200) DEFAULT NULL,
+  `name` varchar(200) NOT NULL,
   `description` text,
   `inventory_tag` varchar(200) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `room_id` int(11) DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
+  `category_id` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
@@ -189,10 +189,10 @@ INSERT INTO `Item` (`id`, `name`, `description`, `inventory_tag`, `category_id`,
 DROP TABLE IF EXISTS `ItemCategory`;
 CREATE TABLE IF NOT EXISTS `ItemCategory` (
 `id` int(11) NOT NULL,
-  `name` varchar(200) DEFAULT NULL,
+  `name` varchar(200) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `inventory_tag` varchar(200) DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
+  `department_id` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
@@ -230,11 +230,11 @@ INSERT INTO `ItemCategory` (`id`, `name`, `description`, `inventory_tag`, `depar
 DROP TABLE IF EXISTS `Room`;
 CREATE TABLE IF NOT EXISTS `Room` (
 `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
   `longname` varchar(200) DEFAULT NULL,
   `description` text,
   `tag` varchar(80) DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
+  `department_id` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
@@ -261,12 +261,12 @@ INSERT INTO `Room` (`id`, `name`, `longname`, `description`, `tag`, `department_
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
 `id` int(11) NOT NULL,
-  `login` varchar(60) DEFAULT NULL,
-  `password` varchar(128) DEFAULT NULL,
-  `email` varchar(120) DEFAULT NULL,
+  `login` varchar(60) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `email` varchar(120) NOT NULL,
   `firstname` varchar(60) DEFAULT NULL,
   `surname` varchar(60) DEFAULT NULL,
-  `role` int(11) DEFAULT NULL,
+  `role` int(11) NOT NULL,
   `job_title` varchar(200) DEFAULT NULL,
   `phone` varchar(12) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
@@ -300,9 +300,9 @@ INSERT INTO `User` (`id`, `login`, `password`, `email`, `firstname`, `surname`, 
 DROP TABLE IF EXISTS `UserDepartmentRole`;
 CREATE TABLE IF NOT EXISTS `UserDepartmentRole` (
 `id` int(11) NOT NULL,
-  `role` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
+  `role` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
