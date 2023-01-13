@@ -9,8 +9,8 @@ export default function Myaccount(){
     const item = JSON.parse(json)
     const jwt = item.value;
 
-    async function fetchData(name) {
-        await fetch(`http://${window.location.hostname}:9000/api/db/users/${name}`, {
+    async function fetchData() {
+        await fetch(`http://${window.location.hostname}:9000/api/user/getUserInfo`, {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=UTF-8",
@@ -27,7 +27,7 @@ export default function Myaccount(){
     }
 
     useEffect(()=>{
-        fetchData(5);
+        fetchData();
     },[])
 
     return(
