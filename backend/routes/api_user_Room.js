@@ -39,17 +39,19 @@ const getUserRoomById = async (req, res) => {
 // Create a new Room
 const createUserRoom = async (req, res) => {
 
-    if(!req.auth.user.id){res.sendStatus(401);return false;}
+    if(!req.auth.user.id){res.status(401).json({"message":"user is not authed"});return false;}
     // console.log(req.body);
-    if(!req.body.department_id){res.send({"message":"department_id is needed in params"});return false;}
+    if(!req.body.department_id){res.status(400).send({"message":"department_id is needed in params"});return false;}
     // var itemcheck = await Item.findByPk(req.body.id);
     // console.log(req.body);
     var departmentId = req.body.department_id;
-    if(!departmentId){res.send({"message":"departmentId of record not found"});return false;}
+    if(!departmentId){res.status(404).send({"message":"departmentId of record not found"});return false;}
     console.log(departmentId);
-    if(!await userHasAccessToDepartment(req.auth,departmentId)){res.sendStatus(403);return false;}
+    if(!await userHasAccessToDepartment(req.auth,departmentId)){res.status(403).send({"message":"You dont have access to this department"});return false;}
 
     try {
+        var checkroom = await Room.findOne({where:{name:req.body.name}});
+        if(checkroom){res.status(409).send({"message":"Room with this name already exists"});return false;}
         var room = await Room.create(req.body);
         console.log(room);
         res.json({
