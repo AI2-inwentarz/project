@@ -8,7 +8,7 @@ const getItems = async (req, res) => {
         res.json(items ? items : {"message":"No records found"});
     } catch (err) {
         console.trace(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -23,7 +23,7 @@ const getItemById = async (req, res) => {
         res.send(item ? item : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -37,7 +37,7 @@ const createItem = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -54,7 +54,7 @@ const updateItem = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -71,7 +71,7 @@ const deleteItem = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 

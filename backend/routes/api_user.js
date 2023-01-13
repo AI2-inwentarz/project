@@ -46,7 +46,7 @@ const getDepartmentsForUser = async (req, res) => {
         res.send(department ? department : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -72,7 +72,7 @@ const getRoomsForDepartment = async (req, res) => {
         res.send(rooms ? rooms : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -91,7 +91,7 @@ const getUserInfo = async (req, res) => {
         res.send(user ? user : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -117,7 +117,7 @@ const getDepartmentCategories = async (req, res) => {
         res.send(categories ? categories : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -143,7 +143,7 @@ const getDepartmentItems = async (req, res) => {
         res.send(items ? items : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -202,7 +202,7 @@ const getContacts = async (req, res) => {
         res.send({users,depardments} ? {users,depardments} : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -229,7 +229,7 @@ const getDepartmentUsers = async (req, res) => {
         res.send(udr ? udr : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -265,7 +265,7 @@ const deleteDepartmentUser = async (req, res) => {
         res.send(result ? {"message":"One result deleted"} : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
@@ -287,7 +287,7 @@ const createDepartmentUserDepartmentRole = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 

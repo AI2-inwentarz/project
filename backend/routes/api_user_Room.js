@@ -8,7 +8,7 @@ const getUserRooms = async (req, res) => {
         res.json(rooms ? rooms : {"message":"No records found"});
     } catch (err) {
         console.trace(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -32,7 +32,7 @@ const getUserRoomById = async (req, res) => {
         res.send(room ? room : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -57,7 +57,7 @@ const createUserRoom = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -87,7 +87,7 @@ const updateUserRoom = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -113,7 +113,7 @@ const deleteUserRoom = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 

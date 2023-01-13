@@ -49,7 +49,7 @@ const authUser = async (req, res) => {
             // res.json();
         }
     } catch (err) {
-        res.sendStatus(400);
+        res.sendStatus(500);
         console.log(err);
     }
 }
@@ -76,7 +76,7 @@ const registerUser = async (req, res) => {
         // await User.create(req.body);
         if(user){res.json({"message": "User Created"});}else{res.json({"message": "Error durning creating user"});}
     } catch (err) {
-        res.sendStatus(400);
+        res.sendStatus(500);
         console.log(err);
     }
 }
@@ -93,6 +93,7 @@ const updateUser = async (req, res) => {
             "message": "User Updated"
         });
     } catch (err) {
+        res.sendStatus(500);
         console.log(err);
     }
 }
@@ -109,6 +110,7 @@ const deleteUser = async (req, res) => {
             "message": "User Deleted"
         });
     } catch (err) {
+        res.sendStatus(500);
         console.log(err);
     }
 }

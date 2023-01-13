@@ -8,7 +8,7 @@ const getRooms = async (req, res) => {
         res.json(rooms ? rooms : {"message":"No records found"});
     } catch (err) {
         console.trace(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -23,7 +23,7 @@ const getRoomById = async (req, res) => {
         res.send(room ? room : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -37,7 +37,7 @@ const createRoom = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -54,7 +54,7 @@ const updateRoom = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -71,7 +71,7 @@ const deleteRoom = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 

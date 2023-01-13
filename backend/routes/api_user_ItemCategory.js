@@ -8,7 +8,7 @@ const getUserItemCategories = async (req, res) => {
         res.json(itemCategorys ? itemCategorys : {"message":"No records found"});
     } catch (err) {
         console.trace(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -32,7 +32,7 @@ const getUserItemCategoryById = async (req, res) => {
         res.send(itemCategory ? itemCategory : {"message":"No record found"});
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -57,7 +57,7 @@ const createUserItemCategory = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -87,7 +87,7 @@ const updateUserItemCategory = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
  
@@ -113,7 +113,7 @@ const deleteUserItemCategory = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 }
 
