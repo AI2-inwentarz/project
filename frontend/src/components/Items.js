@@ -1,4 +1,4 @@
-import { HoverCard, Text, Group, Button, MantineProvider, TextInput, Select } from '@mantine/core';
+import { HoverCard, Text, Group, Button, MantineProvider, TextInput, Select, Anchor } from '@mantine/core';
 import { showNotification, NotificationsProvider } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -107,30 +107,36 @@ export default function Items(data){
         <MantineProvider withNormalizeCSS withGlobalStyles>
             <NotificationsProvider>
             <h2>Przedmioty</h2>
-            <Group>
-                { data &&
-                    Object.values(data.data).map((item,i) =>(
-                        <HoverCard width={280} shadow="md" key={item.name+i}>
-                            <HoverCard.Target>
-                            <Group sx={{gap: "10px"}}>
-                                <Text weight={600} size={20}>{item.name}</Text>
-                                <Text weight={300} size={20}>({item.inventory_tag})</Text>
-                                <Button onClick={()=>navigate(`/room/${departmentID}/${roomID}/${item.id}/edit`)}>Edytuj</Button>
-                                <Button onClick={()=>delData(item.id)}>Usuń</Button>
-                            </Group>
-                            </HoverCard.Target>
-                            <HoverCard.Dropdown>
-                            <Text size="sm">
-                                {item.description} <br />
-                                Ostatnio aktualizowany {item.updatedAt}
-                            </Text>
-                            </HoverCard.Dropdown>
-                        </HoverCard>)
-                    )
-
-                }
             
-            </Group>
+                <Group>
+                    { data &&
+                        Object.values(data.data).map((item,i) =>(
+                        
+                            <HoverCard width={280} shadow="md" key={item.name+i}>
+                                <HoverCard.Target>
+                                <Group sx={{gap: "10px"}}>
+                                    <Anchor href={`/item/${item.id}`} target="_blank">
+                                        <Text weight={600} size={18}>{item.name}</Text>
+                                        <Text weight={300} size={14}>({item.inventory_tag})</Text>
+                                    </Anchor>
+                                    <Button onClick={()=>navigate(`/room/${departmentID}/${roomID}/${item.id}/edit`)}>Edytuj</Button>
+                                    <Button onClick={()=>delData(item.id)}>Usuń</Button>
+                                </Group>
+                                
+                                </HoverCard.Target>
+                                <HoverCard.Dropdown>
+                                <Text size="sm">
+                                    {item.description} <br />
+                                    Ostatnio aktualizowany {item.updatedAt}
+                                </Text>
+                                </HoverCard.Dropdown>
+                            </HoverCard>
+                        )
+                        )
+
+                    }
+                
+                </Group>
             <hr />
             <form onSubmit={form.onSubmit((values) => {addData(values.name, values.desc, values.tag, values.idk, values.idp, values.idd)})} style={{width: "50vw", margin: "0 auto"}}>
                     <TextInput
