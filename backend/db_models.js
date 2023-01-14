@@ -4,13 +4,16 @@ const { sequelize } = require("./db.js");
 const User = sequelize.define('User', {
     // Model attributes are defined here
     login: {
-      type: DataTypes.STRING(60)
+      type: DataTypes.STRING(60),
+      allowNull: false
     },
     password: {
-      type: DataTypes.STRING(128)
+      type: DataTypes.STRING(128),
+      allowNull: false
     },
     email: {
-      type: DataTypes.STRING(120)
+      type: DataTypes.STRING(120),
+      allowNull: false
     },
     firstname: {
       type: DataTypes.STRING(60)
@@ -19,7 +22,8 @@ const User = sequelize.define('User', {
       type: DataTypes.STRING(60)
     },
     role: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     job_title: {
       type: DataTypes.STRING(200)
@@ -39,13 +43,16 @@ const User = sequelize.define('User', {
   const UserDepartmentRole = sequelize.define('UserDepartmentRole', {
     // Model attributes are defined here
     role: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     user_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     department_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
   }, {
     // Other model options go here
@@ -53,7 +60,8 @@ const User = sequelize.define('User', {
 const Department = sequelize.define('Department', {
     // Model attributes are defined here
     name: {
-      type: DataTypes.STRING(200)
+      type: DataTypes.STRING(200),
+      allowNull: false
     },
     shortname: {
       type: DataTypes.STRING(100)
@@ -71,7 +79,8 @@ const Department = sequelize.define('Department', {
       type: DataTypes.STRING(200)
     },
     owner_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
   }, {
     // Other model options go here
@@ -79,7 +88,8 @@ const Department = sequelize.define('Department', {
 const ItemCategory = sequelize.define('ItemCategory', {
     // Model attributes are defined here
     name: {
-      type: DataTypes.STRING(200)
+      type: DataTypes.STRING(200),
+      allowNull: false
     },
     description: {
       type: DataTypes.STRING(200)
@@ -88,7 +98,8 @@ const ItemCategory = sequelize.define('ItemCategory', {
       type: DataTypes.STRING(200)
     },
     department_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
   }, {
     // Other model options go here
@@ -96,7 +107,8 @@ const ItemCategory = sequelize.define('ItemCategory', {
 const Room = sequelize.define('Room', {
     // Model attributes are defined here
     name: {
-      type: DataTypes.STRING(100)
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     longname: {
       type: DataTypes.STRING(200)
@@ -108,7 +120,8 @@ const Room = sequelize.define('Room', {
       type: DataTypes.STRING(80)
     },
     department_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
   }, {
     // Other model options go here
@@ -116,7 +129,8 @@ const Room = sequelize.define('Room', {
 const Item = sequelize.define('Item', {
     // Model attributes are defined here
     name: {
-      type: DataTypes.STRING(200)
+      type: DataTypes.STRING(200),
+      allowNull: false
     },
     description: {
       type: DataTypes.TEXT
@@ -125,13 +139,16 @@ const Item = sequelize.define('Item', {
       type: DataTypes.STRING(200)
     },
     category_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     room_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     department_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
   }, {
     // Other model options go here
